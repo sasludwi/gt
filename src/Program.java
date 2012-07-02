@@ -1,12 +1,20 @@
-
 public class Program {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		System.out.println("dsadsa");
+		try {
+			BigFile file = new BigFile("./data/TFcvscCORTab.txt");
+			
+			for (String line : file)
+			    System.out.println(line);
+			 
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+		 		 
 	}
 
 }
