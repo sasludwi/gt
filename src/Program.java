@@ -4,26 +4,18 @@ public class Program {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+	
+		Graph g = new Graph ();
+		int i = 1;
 		
-		try {
-			BigFile file = new BigFile("./data/TFcvscCORTab.txt");
-			
-			for (String line : file)
-			    System.out.println(line);
-			 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
-		 		 
+		// read in a file
+		g.loadGraphFile("./data/TFcvscCORTab.txt");
 		
-		// TODO Auto-generated method stub
-		Graph g = new Graph();
-		degreeList = g.listDegree();
-		System.out.println("dsadsa");
+		for ( String key : g.getGraph().keySet() ) 
+		{
+			System.out.println ( i++ + ") " + key + " has " + g.getVertexNeighbours(key).size() + " neighbours");
+		}
+		
+		System.out.println ("Number of nodes: " + g.getVertexes().size());
 	}
-	
-	
-	
-	
 }
