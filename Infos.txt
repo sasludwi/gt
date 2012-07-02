@@ -1,0 +1,13 @@
+Account
+	praktikum
+Passwort
+	DFEinv! (Die Fussball Europameisterschaft ist nun vorbei !)
+Verzeichnis
+	~/Data
+	/u/home/praktikum/Data
+	/homes/praktikumserver/Data
+Telefon
+	0341 97 16704 Raum 320.3
+
+
+
