@@ -31,7 +31,7 @@ public class Graph {
 	 * Loads a file into the Graph instance
 	 * @param fileName
 	 */
-	public void loadGraphFile ( String fileName ) 
+	public void loadGraphFile ( String fileName, double threshold ) 
 	{
 		try {
 			BigFile file = new BigFile (fileName);
@@ -57,6 +57,10 @@ public class Graph {
 			    try {
 			    	pValue = Double.valueOf( line.split("\t") [3] );
 			    	correlationP = Double.valueOf( line.split("\t") [4] );
+			    	
+			    	if ( pValue > threshold ) {
+			    		continue;
+			    	}
 			    } catch ( Exception e) {
 			    	System.out.println ( "Problems casting pValue and correlation P! " + e.getMessage () );
 			    	continue;
@@ -155,6 +159,22 @@ public class Graph {
 		}
 		
 		return neighbours;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getNumberOfEdges () 
+	{
+		int numberOfEdges = 0;
+		
+		for ( String key : this.graph.keySet() ) 
+		{
+			numberOfEdges += this.getVertexNeighbours(key).size();
+		}
+		
+		return numberOfEdges;
 	}
 }
 
