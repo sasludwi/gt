@@ -39,14 +39,21 @@ public class Program {
 		*/
 		
 		System.out.println ("");
+		System.out.println ("");
 		
 		// ---------------------------------------------------------------------------
 		/**
-		 * Distributions of degree
+		 * Distributions of degrees
 		 */
+		System.out.println ("Distribution of degrees:");
+		System.out.println ("");
 		for ( String key : g.getGraph ().keySet() ) {
 			System.out.println ( "Vertex " + key + " has " + g.getNumberOfVertexNeighbours (key) );
 		}
+		
+		/**
+		 * 
+		 */
 		
 		// ---------------------------------------------------------------------------
 		
