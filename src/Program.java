@@ -4,10 +4,7 @@ public class Program {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-			
-		//Graph g = new Graph();
-		//g.listDegree();
-		
+				
 		long startTime = System.currentTimeMillis();
 		
 		// TODO Ask the user about the threshold
@@ -19,10 +16,8 @@ public class Program {
 		// read in a file
 		g.loadGraphFile("./data/TFcvscCORTab.txt", threshold);
 		
-		System.out.println ( "Threshold for p value: " + threshold );
-		
+		System.out.println ( "Threshold for p value: " + threshold );	
 		System.out.println ( "Number of nodes: " + g.getVertexes().size() );
-		
 		System.out.println ( "Number of edges: " + g.getNumberOfEdges () );
 				
 		/*
@@ -33,11 +28,8 @@ public class Program {
 		g.loadGraphFile("./data/TFcvscCORTab.txt", threshold);
 		
 		System.out.println ( "" );
-
 		System.out.println ( "Threshold for p value: " + threshold );
-		
 		System.out.println ( "Number of nodes: " + g.getVertexes().size() );
-		
 		System.out.println ( "Number of edges: " + g.getNumberOfEdges () );
 		*/
 		
@@ -57,13 +49,15 @@ public class Program {
 		*/
 		// ---------------------------------------------------------------------------
 		/**
-		 * Distributions of degrees
+		 * k-Cores
 		 */
 		int k = 100;
 		System.out.println ("Task 3: k-cores");
 		System.out.println ( g.getKCore(k).size() );
 		
 		// ---------------------------------------------------------------------------
+		
+		
 		
 		long endTime = System.currentTimeMillis();
 
