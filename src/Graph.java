@@ -11,6 +11,7 @@ public class Graph {
 	protected HashMap<String, HashMap<String, double[]>> graph;
 	protected Vector <String> vertexes;
 	
+	
 	/**
 	 * Constructor
 	 */
@@ -20,15 +21,18 @@ public class Graph {
 		this.vertexes = new Vector <String> ();
 	}
 	
+	
 	public Vector<String> getVertexes () 
 	{
 		return this.vertexes;
 	}
 	
+	
 	public HashMap <String, HashMap<String, double[]>> getGraph () 
 	{
 		return this.graph;
 	}
+	
 	
 	/**
 	 * Loads a file into the Graph instance
@@ -106,6 +110,7 @@ public class Graph {
 		}		
 	}
 	
+	
 	public String [] extractVertexes (String line) 
 	{
 		String [] vertexes = {
@@ -115,6 +120,7 @@ public class Graph {
 		
 		return vertexes; 
 	}
+	
 	
 	public void addVertexesFromLine (String line)
 	{
@@ -153,6 +159,7 @@ public class Graph {
 		
 		return neighbours;
 	}
+	
 	
 	/**
 	 * Returns the number of the neighbours of a vertex
@@ -203,7 +210,7 @@ public class Graph {
 					// - delete the vertex itself 
 					kCore.remove(vertex);
 					
-					// - all neighbours which not have more than k neighbours
+					// - delete all outgoing edges of this vertex
 					for ( String otherVertex : this.graph.keySet() ) 
 					{
 						if (true == kCore.containsKey(otherVertex))
