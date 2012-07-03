@@ -7,7 +7,9 @@ public class Program {
 			
 		long startTime = System.currentTimeMillis();
 		
-		double threshold = 0.1;
+		// TODO Ask the user about the threshold
+		
+		double threshold = 0.05;
 		
 		Graph g = new Graph ();
 		
@@ -19,41 +21,8 @@ public class Program {
 		System.out.println ( "Number of nodes: " + g.getVertexes().size() );
 		
 		System.out.println ( "Number of edges: " + g.getNumberOfEdges () );
-		
-		
+				
 		/*
-		threshold = 0.3;
-		
-		g = new Graph ();
-		
-		g.loadGraphFile("./data/TFcvscCORTab.txt", threshold);
-		
-		System.out.println ( "" );
-
-		System.out.println ( "Threshold for p value: " + threshold );
-		
-		System.out.println ( "Number of nodes: " + g.getVertexes().size() );
-		
-		System.out.println ( "Number of edges: " + g.getNumberOfEdges () );
-		
-
-		
-		threshold = 0.5;
-		
-		g = new Graph ();
-		
-		g.loadGraphFile("./data/TFcvscCORTab.txt", threshold);
-		
-		System.out.println ( "" );
-
-		System.out.println ( "Threshold for p value: " + threshold );
-		
-		System.out.println ( "Number of nodes: " + g.getVertexes().size() );
-		
-		System.out.println ( "Number of edges: " + g.getNumberOfEdges () );
-		*/
-
-		
 		threshold = 0.8;
 		
 		g = new Graph ();
@@ -67,6 +36,19 @@ public class Program {
 		System.out.println ( "Number of nodes: " + g.getVertexes().size() );
 		
 		System.out.println ( "Number of edges: " + g.getNumberOfEdges () );
+		*/
+		
+		System.out.println ("");
+		
+		// ---------------------------------------------------------------------------
+		/**
+		 * Distributions of degree
+		 */
+		for ( String key : g.getGraph ().keySet() ) {
+			System.out.println ( "Vertex " + key + " has " + g.getNumberOfVertexNeighbours (key) );
+		}
+		
+		// ---------------------------------------------------------------------------
 		
 		long endTime = System.currentTimeMillis();
 

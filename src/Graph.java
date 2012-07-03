@@ -48,19 +48,21 @@ public class Graph {
 					continue;
 				}
 				
-				addVertexesFromLine ( line );
-				
-				// Read node names from current line 
-			    fromNode = extractVertexes ( line ) [0];
-			    toNode = extractVertexes ( line ) [1];
-			    
 			    try {
 			    	pValue = Double.valueOf( line.split("\t") [3] );
-			    	correlationP = Double.valueOf( line.split("\t") [4] );
 			    	
 			    	if ( pValue > threshold ) {
 			    		continue;
 			    	}
+			    	
+			    	addVertexesFromLine ( line );
+					
+					// Read node names from current line 
+				    fromNode = extractVertexes ( line ) [0];
+				    toNode = extractVertexes ( line ) [1];
+				    
+				    correlationP = Double.valueOf( line.split("\t") [4] );
+				    
 			    } catch ( Exception e) {
 			    	System.out.println ( "Problems casting pValue and correlation P! " + e.getMessage () );
 			    	continue;
@@ -159,6 +161,16 @@ public class Graph {
 		}
 		
 		return neighbours;
+	}
+	
+	/**
+	 * Returns the number of the neighbours of a vertex
+	 * @param nodeName
+	 * @return
+	 */
+	public int getNumberOfVertexNeighbours (String nodeName) 
+	{
+		return this.getVertexNeighbours(nodeName).size();
 	}
 	
 	/**
