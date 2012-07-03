@@ -1,6 +1,9 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.Vector;
+
+import com.rits.cloning.Cloner;
 
 
 public class Graph {
@@ -51,7 +54,7 @@ public class Graph {
 			    try {
 			    	pValue = Double.valueOf( line.split("\t") [3] );
 			    	
-			    	if ( pValue > threshold ) {
+			    	if ( pValue >= threshold ) {
 			    		continue;
 			    	}
 			    	
@@ -236,6 +239,46 @@ public class Graph {
 		}
 		
 		return numberOfEdges;
+	}
+	
+	/**
+	 * 
+	 */
+	public HashMap<String, HashMap<String, double[]>> getKCore (int k) 
+	{
+		// TODO realize clone!
+		Cloner cloner = new Cloner();
+		
+		HashMap<String, HashMap<String, double[]>> kCore = cloner.deepClone(this.graph);
+		 
+		int oldSize = 0;
+		
+		do {
+			oldSize = kCore.size();
+			
+			for ( String vertex : this.graph.keySet() ) 
+			{				
+				if(k <= kCore.get(vertex).size()) {
+					// OK!
+				} else {
+					// - delete the vertex itself 
+					kCore.remove(vertex);
+					
+					// - all neighbours which not have more than k neighbours
+					for ( String otherVertex : this.graph.keySet() ) 
+					{
+						if (true == kCore.containsKey(otherVertex))
+							kCore.get(otherVertex).remove(vertex);
+					}
+				}
+			}
+			if ( oldSize == this.graph.size() ) { 
+				break; 
+			}
+			
+		} while ( true );
+		
+		return kCore;
 	}
 }
 

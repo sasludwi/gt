@@ -48,15 +48,20 @@ public class Program {
 		/**
 		 * Distributions of degrees
 		 */
+		/*
 		System.out.println ("Distribution of degrees:");
 		System.out.println ("");
 		for ( String key : g.getGraph ().keySet() ) {
 			System.out.println ( "Vertex " + key + " has " + g.getNumberOfVertexNeighbours (key) + " neighbours" );
 		}
-		
+		*/
+		// ---------------------------------------------------------------------------
 		/**
-		 * 
+		 * Distributions of degrees
 		 */
+		int k = 100;
+		System.out.println ("Task 3: k-cores");
+		System.out.println ( g.getKCore(k).size() );
 		
 		// ---------------------------------------------------------------------------
 		
