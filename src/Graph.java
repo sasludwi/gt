@@ -230,6 +230,73 @@ public class Graph {
 	}
 	
 	
+	public HashMap<String, HashMap<String, Integer>> getDistanceMatrixFloyd ()
+	{
+		HashMap<String, HashMap<String, Integer>> distMat = 
+				new HashMap<String, HashMap<String, Integer>> ();
+		
+		/*
+		 * Algorithmus von Floyd
+			(1) Für alle i,j : d[i,j] = w[i,j]
+			(2) Für k = 1 bis n
+			(3)    Für alle Paare i,j
+			(4)        d[i,j] = min (d[i,j],d[i,k] + d[k,j])
+		 */
+		
+		Integer inf = 999;
+		// (1) - set every item in the distance matrix to either 1 or infinite, depending if the edge is present or not
+		for ( String startVertex : this.graph.keySet() )
+		{
+			distMat.put(startVertex, new HashMap <String, Integer> ());
+			for ( String endVertex : this.graph.keySet() )
+			{
+				if (startVertex == endVertex)
+				{
+					distMat.get(startVertex).put(endVertex, 0);
+				}
+				else
+				{
+					if(this.graph.get(startVertex).keySet().contains(endVertex))
+					{
+						distMat.get(startVertex).put(endVertex, 1);
+					}
+					else
+					{
+						distMat.get(startVertex).put(endVertex, inf);
+					}
+				}
+			}
+		}
+		Integer val1 = 0;
+		Integer val2 = 0;
+		
+		// (2) Für k = 1 bis n
+		for ( String k : this.graph.keySet() )
+		{
+			System.out.println("k: " + k);
+			// (3 ) Für alle Paare i,j
+			for ( String i : this.graph.keySet() )
+			{
+				for ( String j : this.graph.keySet() )
+				{
+					// (4) d[i,j] = min (d[i,j],d[i,k] + d[k,j])
+					val1 = distMat.get(i).get(j);
+					val2 = distMat.get(i).get(k) + distMat.get(k).get(j);
+					if(val1 < val2)
+					{
+						distMat.get(i).put(j, val1);
+					}
+					else
+					{
+						distMat.get(i).put(j, val2);
+					}
+				}
+			}
+		}
+		
+		return distMat;
+	}
+	
 	
 	/**
 	 * 

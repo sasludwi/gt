@@ -62,10 +62,14 @@ public class Program {
 		// ---------------------------------------------------------------------------
 		// distance matrix
 		System.out.println ("Task 5: distance-matrix: ");
-		HashMap<String, HashMap<String, Integer>> distMat = g.getDistanceMatrix();
-		for ( String vertex : distMat.keySet() )
+		//HashMap<String, HashMap<String, Integer>> distMat = g.getDistanceMatrix();
+		HashMap<String, HashMap<String, Integer>> distMat = g.getDistanceMatrixFloyd();
+		for ( String startVertex : distMat.keySet() )
 		{
-			System.out.println (vertex + ": " + distMat.get("ADAR").get(vertex).toString());
+			for ( String endVertex : distMat.get(startVertex).keySet() )
+			{
+				System.out.println (startVertex + ": " + distMat.get(startVertex).get(endVertex).toString() );
+			}
 		}
 		// ---------------------------------------------------------------------------
 		
