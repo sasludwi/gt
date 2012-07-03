@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 public class Program {
 
 	/**
@@ -51,13 +53,21 @@ public class Program {
 		/**
 		 * k-Cores
 		 */
-		int k = 100;
-		System.out.println ("Task 3: k-cores");
-		System.out.println ( g.getKCore(k).size() );
+		// int k = 100;
+		// System.out.println ("Task 3: k-cores");
+		// System.out.println ( g.getKCore(k).size() );
 		
 		// ---------------------------------------------------------------------------
 		
-		
+		// ---------------------------------------------------------------------------
+		// distance matrix
+		System.out.println ("Task 5: distance-matrix: ");
+		HashMap<String, HashMap<String, Integer>> distMat = g.getDistanceMatrix();
+		for ( String vertex : distMat.keySet() )
+		{
+			System.out.println (vertex + ": " + distMat.get("ADAR").get(vertex).toString());
+		}
+		// ---------------------------------------------------------------------------
 		
 		long endTime = System.currentTimeMillis();
 

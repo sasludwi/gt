@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
+import java.util.LinkedList;
 
 import com.rits.cloning.Cloner;
 
@@ -225,7 +226,68 @@ public class Graph {
 		} while ( true );
 		
 		return kCore;
+		
 	}
+	
+	
+	
+	/**
+	 * 
+	 * @return a m x m matrix. each element in this matrix is a pair of 
+	 * 		(shortestDistance, numberOfShortestPaths) between node i and node j
+	 */
+	public HashMap<String, HashMap<String, Integer>> getDistanceMatrix ()
+	{
+		HashMap<String, HashMap<String, Integer>> distMat = 
+				new HashMap<String, HashMap<String, Integer>> ();
+		
+		LinkedList<String>  nodes = new LinkedList<String>();
+		LinkedList<String>  visit = new LinkedList<String>();
+		LinkedList<Integer> dists = new LinkedList<Integer>();
+		
+		
+		for ( String startVertex : this.graph.keySet() )
+		{
+			System.out.println("startVertex:" + startVertex);
+			// for each node in the graph: start a breadth first search from this node
+			visit.clear();
+			distMat.put(startVertex, new HashMap <String, Integer> ());
+			
+			// start with the current node
+			nodes.clear();
+			nodes.add(startVertex);
+			// keep nodes and distances in 2 separate lists
+			dists.clear();
+			dists.add(0);
+			
+			// while there are elements in the list
+			while(nodes.size() != 0)
+			{
+				// get the current node: FIFO principle
+				String currentNode  = nodes.removeFirst();
+				Integer currentDist = dists.removeFirst();
+				visit.addLast(currentNode);
+				
+				// store the current distance
+				distMat.get(startVertex).put(currentNode, currentDist);
+				
+				// add all neighbours of the current node to the end of the list, if they are not already in the list
+				for ( String nextVertex : this.graph.get(currentNode).keySet() )
+				{
+					if (nodes.contains(nextVertex) == false && visit.contains(nextVertex) == false)
+					{
+						nodes.addLast(nextVertex);
+						dists.addLast(currentDist + 1);
+					}
+				}
+			}
+				
+		}
+		
+		return distMat;
+	}
+	
+	
 }
 
 
