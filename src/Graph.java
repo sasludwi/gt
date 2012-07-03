@@ -4,6 +4,10 @@ import java.util.Set;
 import java.util.Vector;
 import java.util.LinkedList;
 
+import org.apache.commons.math3.linear.Array2DRowRealMatrix;
+import org.apache.commons.math3.linear.EigenDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
+
 import com.rits.cloning.Cloner;
 
 
@@ -273,7 +277,6 @@ public class Graph {
 		// (2) Für k = 1 bis n
 		for ( String k : this.graph.keySet() )
 		{
-			System.out.println("k: " + k);
 			// (3 ) Für alle Paare i,j
 			for ( String i : this.graph.keySet() )
 			{
@@ -354,6 +357,50 @@ public class Graph {
 		return distMat;
 	}
 	
+	
+	// TODO: for each component
+	public double[] getMaximumEigenVector()
+	{
+		double[] maxEV = new double[0];
+		
+		int size = this.graph.size();
+		double[][] matrixData = new double[size][size];
+		
+		int x = 0;
+		int y = 0;
+		
+		for ( String startVertex : this.graph.keySet() )
+		{
+			y = 0;
+			for ( String endVertex : this.graph.keySet() )
+			{
+				if (startVertex == endVertex)
+				{
+					matrixData[x][y] = 0;
+				}
+				else
+				{
+					if(this.graph.get(startVertex).keySet().contains(endVertex))
+					{
+						matrixData[x][y] = 1;
+					}
+					else
+					{
+						matrixData[x][y] = 0;
+					}
+				}
+				y += 1;
+			}
+			x += 1;
+		}
+		
+		RealMatrix m = new Array2DRowRealMatrix(matrixData);
+		EigenDecomposition ed = new EigenDecomposition(m, 0);
+		double[] evs = ed.getRealEigenvalues();
+		maxEV = ed.getEigenvector(0).toArray();
+		
+		return maxEV;
+	}
 	
 }
 

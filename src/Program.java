@@ -56,22 +56,34 @@ public class Program {
 		// int k = 100;
 		// System.out.println ("Task 3: k-cores");
 		// System.out.println ( g.getKCore(k).size() );
+		// ---------------------------------------------------------------------------
+
 		
 		// ---------------------------------------------------------------------------
-		
-		// ---------------------------------------------------------------------------
-		// distance matrix
-		System.out.println ("Task 5: distance-matrix: ");
-		//HashMap<String, HashMap<String, Integer>> distMat = g.getDistanceMatrix();
-		HashMap<String, HashMap<String, Integer>> distMat = g.getDistanceMatrixFloyd();
-		for ( String startVertex : distMat.keySet() )
-		{
-			for ( String endVertex : distMat.get(startVertex).keySet() )
-			{
-				System.out.println (startVertex + ": " + distMat.get(startVertex).get(endVertex).toString() );
-			}
+		// 4. Eigenvector
+		System.out.println ("Task 4: Eigenvector: ");
+		double[] maxEV = g.getMaximumEigenVector();
+		for (double entry : maxEV) {
+			System.out.println (String.valueOf(entry));
 		}
 		// ---------------------------------------------------------------------------
+		
+		
+		// ---------------------------------------------------------------------------
+				// 5. distance matrix
+				System.out.println ("Task 5: distance-matrix: ");
+				//HashMap<String, HashMap<String, Integer>> distMat = g.getDistanceMatrix();
+				/*
+				HashMap<String, HashMap<String, Integer>> distMat = g.getDistanceMatrixFloyd();
+				for ( String startVertex : distMat.keySet() )
+				{
+					for ( String endVertex : distMat.get(startVertex).keySet() )
+					{
+						System.out.println (startVertex + ": " + distMat.get(startVertex).get(endVertex).toString() );
+					}
+				}
+				*/
+				// ---------------------------------------------------------------------------
 		
 		long endTime = System.currentTimeMillis();
 
