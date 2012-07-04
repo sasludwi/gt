@@ -128,6 +128,8 @@ public class Program {
 		// ---------------------------------------------------------------------------
 
 		long endTime = System.currentTimeMillis();
+		
+		g.exportDescVertexNeighbours(30);
 
 		System.out.println("");
 		System.out.println("---------------------------------");

@@ -1,4 +1,9 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.Vector;
@@ -70,8 +75,8 @@ public class Graph {
 			    	addVertexesFromLine ( line );
 					
 					// Read node names from current line 
-				    fromNode = extractVertexes ( line ) [0];
-				    toNode = extractVertexes ( line ) [1];
+				    fromNode = extractVertexes ( line ) [0].replace("\"", "");
+				    toNode = extractVertexes ( line ) [1].replace("\"", "");
 				    
 				    correlationP = Double.valueOf( line.split("\t") [4] );
 				    
@@ -439,6 +444,70 @@ public class Graph {
 		return maxEV;
 	}
 	
+	/**
+	 * 
+	 */
+	public void exportDescVertexNeighbours (int max) 
+	{
+		PrintStream stdout = System.out;
+		
+		try {
+			// System.setOut(new PrintStream(new File("./web/forcegraph_files/flare.json")));
+			System.setOut(new PrintStream(new File("./web/bubble_files/flare.json")));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		
+		int i = 0;
+		String [][] vertexes = new String [this.graph.keySet().size()][2];
+		
+		for ( String vertex : this.graph.keySet() )
+		{
+			// System.out.println ( vertex + " -> " + g.getNumberOfVertexNeighbours(vertex));
+			vertexes [i++] = new String[] { vertex, String.valueOf(this.getNumberOfVertexNeighbours(vertex)) };
+		}
+		
+		Arrays.sort(vertexes, new Comparator<Object>() {
+	        @Override
+	        public int compare(Object o1, Object o2) {
+	            // cast the object args back to string arrays
+	            String[] row1 = (String[])o1;
+	            String[] row2 = (String[])o2;
+
+	            // compare the desired column values
+	            return Integer.valueOf(row1 [1]) < Integer.valueOf(row2 [1]) ? 1 : 0;
+	        }
+	    });
+
+		boolean first = true;
+		i = 0;
+		
+		System.out.println ("{ \"name\":\"center\", \"children\": [");
+		
+		for ( String [] ele : vertexes )
+		{
+			if ( first == false ) {
+				System.out.print(",");
+			} else {
+				first = false;
+			}
+			
+			System.out.print("{");
+			
+			System.out.println ("\"name\":\"" + ele [0] + "\",");
+			System.out.println ("\"size\":\"" + (Integer.valueOf(ele [1])*1000) + "\"");
+
+			
+			System.out.println ("}");
+			
+			if ( i++ == max ) break;
+		}
+		
+		System.out.println ("]}");
+		
+		System.setOut(stdout);
+	}
 }
 
 
