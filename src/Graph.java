@@ -85,8 +85,9 @@ public class Graph {
 			    // fromNode has an entry
 			    if ( true == this.graph.containsKey(fromNode) ) {
 			    	
-			    	if ( fromNode != toNode ) {
-				    	value [0] = pValue;
+			    	if ( ! fromNode.equals( toNode ) ) {
+			    		value = new double [2];
+			    		value [0] = pValue;
 				    	value [1] = correlationP;
 				    	
 				    	this.graph.get(fromNode).put (toNode, value);
@@ -101,15 +102,16 @@ public class Graph {
 			    	this.graph.get(fromNode).put (fromNode, null);
 			    	
 			    	// set fromNode > toNode, if fromNode != toNode
-			    	if ( fromNode != toNode ) {
-				    	value [0] = pValue;
+			    	if ( ! fromNode.equals( toNode ) ) {
+			    		value = new double [2];
+			    		value [0] = pValue;
 				    	value [1] = correlationP;
 				    	
 				    	this.graph.get(fromNode).put (toNode, value);
 			    	}
 			    }
 			    
-			    
+			    /*
 			    // add symmetric entry (but has not changed the number of edges compared to normal insert)
 			    // handle toNode
 			    // toNode has an entry
@@ -138,6 +140,7 @@ public class Graph {
 				    	this.graph.get(toNode).put (fromNode, value);
 			    	}
 			    }
+			    */
 			    
 			}
 			 
