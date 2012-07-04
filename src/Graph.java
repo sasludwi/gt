@@ -445,7 +445,7 @@ public class Graph {
 	}
 	
 	
-	public LinkedList<LinkedList<String>> getNumberOfComponents()
+	public LinkedList<LinkedList<String>> getComponents()
 	{
 		
 		LinkedList<LinkedList<String>> allComponents = new LinkedList<LinkedList<String>>();
@@ -490,6 +490,10 @@ public class Graph {
 		
 		return allComponents;
 	}
+	
+	
+	
+	
 	
 	
 	

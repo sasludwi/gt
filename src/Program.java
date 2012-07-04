@@ -78,7 +78,7 @@ public class Program {
 			
 			
 			// (d) theta vs number of components
-			LinkedList<LinkedList<String>> compList = g.getNumberOfComponents();
+			LinkedList<LinkedList<String>> compList = g.getComponents();
 			
 			componentPS.println(String.valueOf(threshold) + "\t" + String.valueOf( compList.size() ));
 			System.out.println ( "theta: " + threshold + " - components: " + compList.size() );
