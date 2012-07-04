@@ -18,8 +18,8 @@ public class Program {
 		// TODO Ask the user about the threshold
 		
 		// task 1
-		double[] thetas = {0.00001, 0.00002, 0.00005, 0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05};
-		
+		//double[] thetas = {0.00001, 0.00002, 0.00005, 0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05};
+		double[] thetas = {};
 		
 		FileOutputStream edgesFO = null;
 		PrintStream edgesPS = null;
@@ -103,8 +103,18 @@ public class Program {
 		
 		
 		Graph g = new Graph ();
-		g.loadGraphFile("./data/TFcvscCORTab.txt", 0.001);	// read in a file
+		g.loadGraphFile("./data/TFcvscCORTab.txt", 0.05);	// read in a file
 		
+		
+		
+		HashMap<String, HashMap<String, Integer>> dists = g.getNumberShortestPathsMatrix();
+		Integer k = dists.get("ADAR").get("ARNT");
+		k = k + 1;
+		for ( String startVertex : dists.keySet() ){
+			for ( String endVertex : dists.get(startVertex).keySet() ){
+				System.out.println (startVertex + "-" + endVertex + ": " + dists.get(startVertex).get(endVertex).toString() );
+			}
+		}
 		// ---------------------------------------------------------------------------
 		/**
 		 * Distributions of degrees

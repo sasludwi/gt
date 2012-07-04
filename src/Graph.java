@@ -400,6 +400,98 @@ public class Graph {
 	}
 	
 	
+	// using Dijkstra
+	/* 	 1  Funktion Dijkstra(Graph, Startknoten):
+		 2      initialisiere(Graph,Startknoten,abstand[],Q)
+		 3      solange Q nicht leer:                       // Der eigentliche Algorithmus
+		 4          u := Knoten in Q mit kleinstem Wert in abstand[]
+		 5          entferne u aus Q                                // für u ist der kürzeste Weg nun bestimmt
+		 6          für jeden Nachbarn v von u:
+		 7              falls v in Q:
+		 8                 distanz_update(u,v,abstand[])   // prüfe Abstand vom Startknoten zu v
+		 
+		 1  Methode initialisiere(Graph,Startknoten,abstand[],Q):
+		 2      für jeden Knoten v in Graph:
+		 3          abstand[v] := unendlich
+		 4      abstand[Startknoten] := 0
+		 5      Q := Die Menge aller Knoten in Graph
+		 
+		 1  Methode distanz_update(u,v,abstand[]):
+		 2      alternativ := abstand[u] + abstand_zwischen(u, v)   // Weglänge vom Startknoten nach v über u
+		 3      falls alternativ < abstand[v]:
+		 4          abstand[v] := alternativ
+	 */
+	public HashMap<String, HashMap<String, Integer>> getNumberShortestPathsMatrix ()
+	{
+		HashMap<String, HashMap<String, Integer>> pathLengthsMatrix = 
+				new HashMap<String, HashMap<String, Integer>> ();
+		HashMap<String, HashMap<String, Integer>> numberPathsMatrix = 
+				new HashMap<String, HashMap<String, Integer>> ();
+		LinkedList<String> nodes = new LinkedList<String>();
+		
+		int inf = 999999;
+		int min = inf;
+		int alternativ = 0;
+		String u = null;
+		
+		// for every startVertex
+		for ( String startVertex : this.graph.keySet() )
+		{
+			System.out.println("startVertex:" + startVertex);
+			pathLengthsMatrix.put(startVertex, new HashMap <String, Integer>() );
+			
+			// 2 - initialisiere(Graph,Startknoten,abstand[],Q)
+			// 2+3 - für jeden Knoten v in Graph: abstand[v] := unendlich
+			for ( String toVertex : this.graph.keySet() )
+			{
+				pathLengthsMatrix.get(startVertex).put(toVertex, inf);
+				// 5 - Q := Die Menge aller Knoten in Graph
+				nodes.addLast(toVertex);
+			}
+			// 4 - abstand[Startknoten] := 0
+			pathLengthsMatrix.get(startVertex).put(startVertex, 0);
+			
+			// start algorithm
+			// 3 - solange Q nicht leer:
+			while(nodes.size() != 0)
+			{
+				// 4 - u := Knoten in Q mit kleinstem Wert in abstand[]
+				min = inf;
+				u = null;
+				for ( String vertex : nodes ){
+					if( pathLengthsMatrix.get(startVertex).get(vertex) < min ){
+						min = pathLengthsMatrix.get(startVertex).get(vertex);
+						u = vertex;
+					}
+				}
+				// 5 - entferne u aus Q
+				nodes.remove(u);
+				// 6 - für jeden Nachbarn v von u:
+				if (this.graph.get(u) != null){
+					for ( String neighbourVertex : this.graph.get(u).keySet() )
+					{
+						//  7 - falls v in Q:
+						if( nodes.contains(neighbourVertex) ){
+							// 8 - distanz_update(u,v,abstand[])
+							// 2 - alternativ := abstand[u] + abstand_zwischen(u, v)
+							alternativ = pathLengthsMatrix.get(startVertex).get(u) + 1;
+							// 3 - falls alternativ < abstand[v]:
+							if( alternativ < pathLengthsMatrix.get(startVertex).get(neighbourVertex) ){
+								// 4 abstand[v] := alternativ
+								pathLengthsMatrix.get(startVertex).put(neighbourVertex, alternativ);
+							}        
+						}
+					}
+				}
+			}
+		}
+		
+		return pathLengthsMatrix;
+	}
+	
+	
+	
+	
 	// TODO: for each component
 	public double[] getMaximumEigenVector()
 	{
