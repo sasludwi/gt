@@ -67,7 +67,7 @@ public class Graph {
 				
 			    try {
 			    	pValue = Double.valueOf( line.split("\t") [3] );
-			    	
+			    				    	
 			    	if ( pValue >= threshold ) {
 			    		continue;
 			    	}
@@ -80,6 +80,7 @@ public class Graph {
 				    
 				    correlationP = Double.valueOf( line.split("\t") [4] );
 				    
+				    
 			    } catch ( Exception e) {
 			    	System.out.println ( "Problems casting pValue and correlation P! " + e.getMessage () );
 			    	continue;
@@ -89,8 +90,9 @@ public class Graph {
 			    // fromNode has an entry
 			    if ( true == this.graph.containsKey(fromNode) ) {
 			    	
-			    	if ( fromNode != toNode ) {
-				    	value [0] = pValue;
+			    	if ( ! fromNode.equals( toNode ) ) {
+			    		value = new double [2];
+			    		value [0] = pValue;
 				    	value [1] = correlationP;
 				    	
 				    	this.graph.get(fromNode).put (toNode, value);
@@ -105,13 +107,46 @@ public class Graph {
 			    	this.graph.get(fromNode).put (fromNode, null);
 			    	
 			    	// set fromNode > toNode, if fromNode != toNode
-			    	if ( fromNode != toNode ) {
-				    	value [0] = pValue;
+			    	if ( ! fromNode.equals( toNode ) ) {
+			    		value = new double [2];
+			    		value [0] = pValue;
 				    	value [1] = correlationP;
 				    	
 				    	this.graph.get(fromNode).put (toNode, value);
 			    	}
 			    }
+			    
+			    /*
+			    // add symmetric entry (but has not changed the number of edges compared to normal insert)
+			    // handle toNode
+			    // toNode has an entry
+			    if ( true == this.graph.containsKey(toNode) ) {
+			    	
+			    	if ( toNode != fromNode ) {
+				    	value [0] = pValue;
+				    	value [1] = correlationP;
+				    	
+				    	this.graph.get(toNode).put (fromNode, value);
+			    	}
+			    	
+			    } else {
+			    	
+			    	// toNode has NO entry
+			    	this.graph.put(toNode, new HashMap <String,double[]> ());
+			    	
+			    	// set toNode > toNode to null
+			    	this.graph.get(toNode).put (toNode, null);
+			    	
+			    	// set toNode > fromNode, if toNode != fromNode
+			    	if ( toNode != fromNode ) {
+				    	value [0] = pValue;
+				    	value [1] = correlationP;
+				    	
+				    	this.graph.get(toNode).put (fromNode, value);
+			    	}
+			    }
+			    */
+			    
 			}
 			 
 		} catch (Exception e) {
@@ -124,8 +159,8 @@ public class Graph {
 	public String [] extractVertexes (String line) 
 	{
 		String [] vertexes = {
-			line.split("\t") [1].replaceAll("\\.", "-"),
-			line.split("\t") [2].replaceAll("\\.", "-")
+			line.split("\t") [1].replaceAll("\\.", "-").replace('"', ' ').trim(),
+			line.split("\t") [2].replaceAll("\\.", "-").replace('"', ' ').trim()
 		};
 		
 		return vertexes; 
