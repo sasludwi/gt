@@ -22,10 +22,16 @@ public class Program {
 		
 		FileOutputStream edgesFO = null;
 		PrintStream edgesPS = null;
+		FileOutputStream componentFO = null;
+		PrintStream componentPS = null;
 		FileOutputStream degreesFO = null;
 		PrintStream degreesPS = null;
 		FileOutputStream weightsFO = null;
 		PrintStream weightsPS = null;
+		
+		componentFO = new FileOutputStream("out/components.dat");
+		componentPS = new PrintStream(componentFO);
+		componentPS.println("# threshold   number_of_components");
 		
 		edgesFO = new FileOutputStream("out/edges.dat");
 		edgesPS = new PrintStream(edgesFO);
@@ -36,7 +42,7 @@ public class Program {
 		{
 			Graph g = new Graph ();
 			g.loadGraphFile("./data/TFcvscCORTab.txt", threshold);	// read in a file
-			
+			/*
 			// (a) theta vs number edges
 			edgesPS.println(String.valueOf(threshold) + "\t" + String.valueOf( g.getNumberOfEdges() ));
 			System.out.println ( "theta: " + threshold + " - edges: " + g.getNumberOfEdges () + " - nodes: " + g.getVertexes().size());	
@@ -66,12 +72,14 @@ public class Program {
 			}
 			degreesFO.close();
 			degreesPS.close();
-			
-			// (d)
-			
-			
+			*/
+			// (d) theta vs number of components
+			componentPS.println(String.valueOf(threshold) + "\t" + String.valueOf( g.getNumberOfComponents() ));
+			System.out.println ( "theta: " + threshold + " - components: " + g.getNumberOfComponents() );	
 		}
 		
+		componentFO.close();
+		componentPS.close();
 		edgesPS.close();
 		edgesFO.close();
 		System.out.println ("");

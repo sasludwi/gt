@@ -444,6 +444,62 @@ public class Graph {
 		return maxEV;
 	}
 	
+	
+	public int getNumberOfComponents()
+	{
+		int numberOfComponents = 0;
+		
+		LinkedList<String> nodes = new LinkedList<String>();
+		LinkedList<String>  stillToVisit = new LinkedList<String>();
+		for ( String node : this.graph.keySet() ) {
+			stillToVisit.addLast(node);
+		}
+		
+		// if there are still unvisited nodes
+		while(stillToVisit.size() != 0)
+		{
+			// pop the first unvisted node
+			String startVertex = stillToVisit.getFirst();
+			// there has to be one more component
+			numberOfComponents += 1;
+			
+			// start a new BFS with the current node
+			nodes.clear();
+			nodes.add(startVertex);
+			
+			// while there are elements in the list
+			while(nodes.size() != 0)
+			{
+				// get the current node: FIFO principle
+				String currentNode = nodes.removeFirst();
+				// this node has now been visited
+				stillToVisit.remove(currentNode);
+				
+				// add all neighbours of the current node to the end of the list, if they are not already in the list
+				for ( String nextVertex : this.graph.get(currentNode).keySet() )
+				{
+					if (nodes.contains(nextVertex) == false && stillToVisit.contains(nextVertex) == true)
+					{
+						nodes.addLast(nextVertex);
+					}
+				}
+			}
+				
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		return numberOfComponents;
+	}
+	
+	
+	
+	
 	/**
 	 * 
 	 */
