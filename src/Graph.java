@@ -445,11 +445,12 @@ public class Graph {
 	}
 	
 	
-	public int getNumberOfComponents()
+	public LinkedList<LinkedList<String>> getNumberOfComponents()
 	{
-		int numberOfComponents = 0;
 		
+		LinkedList<LinkedList<String>> allComponents = new LinkedList<LinkedList<String>>();
 		LinkedList<String> nodes = new LinkedList<String>();
+		LinkedList<String> currentComponents = new LinkedList<String>();
 		LinkedList<String>  stillToVisit = new LinkedList<String>();
 		for ( String node : this.graph.keySet() ) {
 			stillToVisit.addLast(node);
@@ -460,12 +461,11 @@ public class Graph {
 		{
 			// pop the first unvisted node
 			String startVertex = stillToVisit.getFirst();
-			// there has to be one more component
-			numberOfComponents += 1;
 			
 			// start a new BFS with the current node
 			nodes.clear();
 			nodes.add(startVertex);
+			currentComponents = new LinkedList<String>();
 			
 			// while there are elements in the list
 			while(nodes.size() != 0)
@@ -474,6 +474,7 @@ public class Graph {
 				String currentNode = nodes.removeFirst();
 				// this node has now been visited
 				stillToVisit.remove(currentNode);
+				currentComponents.add(currentNode);
 				
 				// add all neighbours of the current node to the end of the list, if they are not already in the list
 				for ( String nextVertex : this.graph.get(currentNode).keySet() )
@@ -484,17 +485,10 @@ public class Graph {
 					}
 				}
 			}
-				
+			allComponents.add(currentComponents);
 		}
 		
-		
-		
-		
-		
-		
-		
-		
-		return numberOfComponents;
+		return allComponents;
 	}
 	
 	

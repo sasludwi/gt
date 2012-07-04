@@ -74,8 +74,8 @@ public class Program {
 			degreesPS.close();
 			*/
 			// (d) theta vs number of components
-			componentPS.println(String.valueOf(threshold) + "\t" + String.valueOf( g.getNumberOfComponents() ));
-			System.out.println ( "theta: " + threshold + " - components: " + g.getNumberOfComponents() );	
+			componentPS.println(String.valueOf(threshold) + "\t" + String.valueOf( g.getNumberOfComponents().size() ));
+			System.out.println ( "theta: " + threshold + " - components: " + g.getNumberOfComponents().size() );	
 		}
 		
 		componentFO.close();
