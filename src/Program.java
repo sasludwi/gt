@@ -3,6 +3,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class Program {
 
@@ -28,6 +29,8 @@ public class Program {
 		PrintStream degreesPS = null;
 		FileOutputStream weightsFO = null;
 		PrintStream weightsPS = null;
+		FileOutputStream compsFO = null;
+		PrintStream compsPS = null;
 		
 		componentFO = new FileOutputStream("out/components.dat");
 		componentPS = new PrintStream(componentFO);
@@ -42,7 +45,7 @@ public class Program {
 		{
 			Graph g = new Graph ();
 			g.loadGraphFile("./data/TFcvscCORTab.txt", threshold);	// read in a file
-			/*
+			
 			// (a) theta vs number edges
 			edgesPS.println(String.valueOf(threshold) + "\t" + String.valueOf( g.getNumberOfEdges() ));
 			System.out.println ( "theta: " + threshold + " - edges: " + g.getNumberOfEdges () + " - nodes: " + g.getVertexes().size());	
@@ -72,10 +75,24 @@ public class Program {
 			}
 			degreesFO.close();
 			degreesPS.close();
-			*/
+			
+			
 			// (d) theta vs number of components
-			componentPS.println(String.valueOf(threshold) + "\t" + String.valueOf( g.getNumberOfComponents().size() ));
-			System.out.println ( "theta: " + threshold + " - components: " + g.getNumberOfComponents().size() );	
+			LinkedList<LinkedList<String>> compList = g.getNumberOfComponents();
+			
+			componentPS.println(String.valueOf(threshold) + "\t" + String.valueOf( compList.size() ));
+			System.out.println ( "theta: " + threshold + " - components: " + compList.size() );
+			
+			// (e) theta vs component-size-distribution
+			compsFO = new FileOutputStream("out/comp_" + String.valueOf(threshold) + ".dat");
+			compsPS = new PrintStream(compsFO);
+			compsPS.println("# number components");
+			for ( LinkedList<String> component : compList ) {
+				compsPS.println(String.valueOf( component.size() ));
+			}
+			compsFO.close();
+			compsPS.close();
+			
 		}
 		
 		componentFO.close();
