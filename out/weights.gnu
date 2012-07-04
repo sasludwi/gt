@@ -10,15 +10,14 @@ set auto
 #set ylabel "frequency (absolute value)"
 set auto y	# set auto y ; set logscale y
 set auto x	# set auto x ; set logscale x
-#set xrange[0:620]
-#set yrange[0:60]
+set xrange[0.5:1.05]
+set yrange[0:14000]
 set xtics auto
 set ytics auto
 
 set style histogram clustered gap 0
-#set style fill solid border -1
 set style fill solid noborder
-binwidth=0.0001
+binwidth=0.001
 set boxwidth binwidth
 bin(x,width)=width*floor(x/width) + binwidth/2.0
 
@@ -26,7 +25,6 @@ bin(x,width)=width*floor(x/width) + binwidth/2.0
 set multiplot;                          # get into multiplot mode
 
 set size 0.3333, 0.25;  
-
 
 set origin 0.0,0.75  
 set title  "degree distribution for theta = 1.0E-5"

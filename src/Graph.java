@@ -117,7 +117,8 @@ public class Graph {
 			    // toNode has an entry
 			    if ( true == this.graph.containsKey(toNode) ) {
 			    	
-			    	if ( toNode != fromNode ) {
+			    	if ( ! toNode.equals( fromNode ) ) {
+			    		value = new double [2];
 				    	value [0] = pValue;
 				    	value [1] = correlationP;
 				    	
@@ -133,7 +134,8 @@ public class Graph {
 			    	this.graph.get(toNode).put (toNode, null);
 			    	
 			    	// set toNode > fromNode, if toNode != fromNode
-			    	if ( toNode != fromNode ) {
+			    	if ( ! toNode.equals( fromNode ) ) {
+				    	value = new double [2];
 				    	value [0] = pValue;
 				    	value [1] = correlationP;
 				    	

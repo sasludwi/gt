@@ -47,8 +47,10 @@ public class Program {
 			weightsPS.println("# weights");
 			for ( String from : g.getGraph().keySet() ) {
 				for ( String to : g.getGraph().get(from).keySet() ) {
-					double val = g.getGraph().get(from).get(to)[1];
-					weightsPS.println(String.valueOf( val ));
+					if(g.getGraph().get(from).get(to) != null){
+						double val = g.getGraph().get(from).get(to)[1];
+						weightsPS.println(String.valueOf( val ));
+					}
 				}
 			}
 			weightsFO.close();
