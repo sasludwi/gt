@@ -439,17 +439,20 @@ public class Graph {
 		{
 			System.out.println("startVertex:" + startVertex);
 			pathLengthsMatrix.put(startVertex, new HashMap <String, Integer>() );
+			numberPathsMatrix.put(startVertex, new HashMap <String, Integer>() );
 			
 			// 2 - initialisiere(Graph,Startknoten,abstand[],Q)
 			// 2+3 - für jeden Knoten v in Graph: abstand[v] := unendlich
 			for ( String toVertex : this.graph.keySet() )
 			{
 				pathLengthsMatrix.get(startVertex).put(toVertex, inf);
+				numberPathsMatrix.get(startVertex).put(toVertex, 0);
 				// 5 - Q := Die Menge aller Knoten in Graph
 				nodes.addLast(toVertex);
 			}
 			// 4 - abstand[Startknoten] := 0
 			pathLengthsMatrix.get(startVertex).put(startVertex, 0);
+			numberPathsMatrix.get(startVertex).put(startVertex, 1);	// 0 everywhere, but start-node = 1
 			
 			// start algorithm
 			// 3 - solange Q nicht leer:
@@ -479,11 +482,23 @@ public class Graph {
 							if( alternativ < pathLengthsMatrix.get(startVertex).get(neighbourVertex) ){
 								// 4 abstand[v] := alternativ
 								pathLengthsMatrix.get(startVertex).put(neighbourVertex, alternativ);
-							}        
+								numberPathsMatrix.get(startVertex).put(neighbourVertex, 1);	// reset to 1
+							}
+							if( alternativ == pathLengthsMatrix.get(startVertex).get(neighbourVertex) ){
+								Integer oldNum  = numberPathsMatrix.get(startVertex).get(neighbourVertex);
+								Integer fromNum = numberPathsMatrix.get(startVertex).get(u);
+								numberPathsMatrix.get(startVertex).put(neighbourVertex, oldNum + fromNum);	// add shortest paths
+							}
 						}
 					}
 				}
 			}
+			
+			//for(String n : numberPathsMatrix.get(startVertex).keySet())
+			//{
+			//	System.out.println(startVertex +  "-" + n + ": " + numberPathsMatrix.get(startVertex).get(n) );
+			//}
+			
 		}
 		
 		return pathLengthsMatrix;
