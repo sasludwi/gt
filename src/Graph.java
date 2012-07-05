@@ -20,7 +20,7 @@ public class Graph {
 	
 	protected HashMap<String, HashMap<String, double[]>> graph;
 	protected Vector <String> vertexes;
-	
+	protected Integer inf = 999999;
 	
 	/**
 	 * Constructor
@@ -289,7 +289,7 @@ public class Graph {
 			(4)        d[i,j] = min (d[i,j],d[i,k] + d[k,j])
 		 */
 		
-		Integer inf = 999;
+		
 		// (1) - set every item in the distance matrix to either 1 or infinite, depending if the edge is present or not
 		for ( String startVertex : this.graph.keySet() )
 		{
@@ -429,7 +429,6 @@ public class Graph {
 				new HashMap<String, HashMap<String, Integer>> ();
 		LinkedList<String> nodes = new LinkedList<String>();
 		
-		int inf = 999999;
 		int min = inf;
 		int alternativ = 0;
 		String u = null;
@@ -508,47 +507,64 @@ public class Graph {
 	
 	
 	// TODO: for each component
-	public double[] getMaximumEigenVector()
+	public LinkedList<double[]> getMaximumEigenVector()
 	{
-		double[] maxEV = new double[0];
 		
-		int size = this.graph.size();
-		double[][] matrixData = new double[size][size];
+		LinkedList<double[]> compsEV = new LinkedList<double[]>();
+		LinkedList<LinkedList<String>> components = getComponents();
 		
-		int x = 0;
-		int y = 0;
 		
-		for ( String startVertex : this.graph.keySet() )
+		for(LinkedList<String> comp :  components)
 		{
-			y = 0;
-			for ( String endVertex : this.graph.keySet() )
+			if( comp.size() > 5)
 			{
-				if (startVertex == endVertex)
+				double[] maxEV = new double[0];
+				
+				int size = comp.size();
+				double[][] matrixData = new double[size][size];
+				
+				int x = 0;
+				int y = 0;
+				
+				for ( String startVertex : comp )
 				{
-					matrixData[x][y] = 0;
-				}
-				else
-				{
-					if(this.graph.get(startVertex).keySet().contains(endVertex))
+					y = 0;
+					for ( String endVertex : comp )
 					{
-						matrixData[x][y] = 1;
+						if (startVertex == endVertex)
+						{
+							matrixData[x][y] = 0;
+						}
+						else
+						{
+							if(this.graph.get(startVertex).keySet().contains(endVertex))
+							{
+								matrixData[x][y] = 1;
+							}
+							else
+							{
+								matrixData[x][y] = 0;
+							}
+						}
+						y += 1;
 					}
-					else
-					{
-						matrixData[x][y] = 0;
-					}
+					x += 1;
 				}
-				y += 1;
+				
+				RealMatrix m = new Array2DRowRealMatrix(matrixData);
+				EigenDecomposition ed = new EigenDecomposition(m, 0);
+				double[] evs = ed.getRealEigenvalues();
+				maxEV = ed.getEigenvector(0).toArray();
+				
+				compsEV.addLast(maxEV);
 			}
-			x += 1;
+			else
+			{
+				compsEV.addLast(null);
+			}
 		}
-		
-		RealMatrix m = new Array2DRowRealMatrix(matrixData);
-		EigenDecomposition ed = new EigenDecomposition(m, 0);
-		double[] evs = ed.getRealEigenvalues();
-		maxEV = ed.getEigenvector(0).toArray();
-		
-		return maxEV;
+				
+		return compsEV;
 	}
 	
 	
@@ -599,10 +615,74 @@ public class Graph {
 	}
 	
 	
+	public HashMap<String, Integer> getExcentricities ()
+	{
+		HashMap<String, Integer> excentricities = new HashMap<String, Integer>();
+		HashMap<String, HashMap<String, Integer>> distMat = getDistanceMatrixFloyd();
+		
+		System.out.println("got the distance matrix");
+		for(String fromVertex : this.graph.keySet()){
+			excentricities.put(fromVertex, 0);
+			for(String toVertex : distMat.get(fromVertex).keySet()) {
+				if(distMat.get(fromVertex).get(toVertex) > excentricities.get(fromVertex) && (! distMat.get(fromVertex).get(toVertex).equals(inf)) )
+					excentricities.put(fromVertex, distMat.get(fromVertex).get(toVertex));
+			}
+		}
+		
+		return excentricities;
+	}
+
+	
+	public HashMap<String, Integer> getCentroidValue ()
+	{
+		HashMap<String, Integer> centroidValues = new HashMap<String, Integer>();
+		HashMap<String, Integer> statuses = getStatuses();
+		LinkedList<LinkedList<String>> components = getComponents();
+		
+		for(String vertex : this.graph.keySet()){
+			Integer min = inf;
+			LinkedList<String> currentComponent = null;
+			for(LinkedList<String> cl : components){
+				if(cl.contains(vertex))
+					currentComponent = cl;
+			}
+			
+			for(String otherVertex : statuses.keySet()) {
+				if(currentComponent != null 
+						&& currentComponent.contains(otherVertex) 
+						&&  (! vertex.equals(otherVertex)) 
+						&& statuses.get(otherVertex) < min ){
+					min = statuses.get(otherVertex);
+				}
+			}
+			if(min != inf){
+				centroidValues.put(vertex, statuses.get(vertex) - min);
+			}
+			else {
+				centroidValues.put(vertex, -1);
+			}
+		}
+		
+		return centroidValues;
+	}
 	
 	
-	
-	
+	public HashMap<String, Integer> getStatuses ()
+	{
+		HashMap<String, Integer> statutes = new HashMap<String, Integer>();
+		HashMap<String, HashMap<String, Integer>> distMat = getDistanceMatrixFloyd();
+		
+		System.out.println("got the distance matrix");
+		for(String fromVertex : this.graph.keySet()){
+			statutes.put(fromVertex, 0);
+			for(String toVertex : distMat.get(fromVertex).keySet()) {
+				if( (! distMat.get(fromVertex).get(toVertex).equals(inf)) )
+					statutes.put(fromVertex, statutes.get(fromVertex) + distMat.get(fromVertex).get(toVertex));
+			}
+		}
+		
+		return statutes;
+	}
 	
 	
 	/**
