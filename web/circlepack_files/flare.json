@@ -1,0 +1,25 @@
+{
+ "name": "k=4",
+ "children": [
+  {
+   "name": "k=5",
+   "children": [
+    {
+     "name": "k=6",
+     "children": [
+      {"name": "KNOTEN_NAME", "size": 4000},
+      {"name": "KNOTEN_NAME", "size": 700},
+      {"name": "KNOTEN_NAME", "size": 700},
+      {"name": "KNOTEN_NAME", "size": 700}
+     ]
+    },
+    {
+     "name": "",
+     "children": [
+        {"name": "GRUPPENKNOTEN", "size": 700}
+      ]
+    }
+   ]
+  }
+ ]
+}
