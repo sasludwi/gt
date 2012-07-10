@@ -1,9 +1,9 @@
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Program {
 
@@ -110,6 +110,56 @@ public class Program {
 		g.loadGraphFile("./data/TFcvscCORTab.txt", singlethreshold);	// read in a file
 		System.out.println ( "theta: " + singlethreshold + " - edges: " + g.getNumberOfEdges () + " - nodes: " + g.getVertexes().size());	
 		
+		
+		System.out.println("Going to get centroid values");
+		HashMap<String, Integer> CV = g.getCentroidValue();
+		for(String vertex : CV.keySet()){
+			System.out.println(vertex + ": " + CV.get(vertex));
+		}
+		
+		/*
+		// Testing purpose only
+		Random generator = new Random();
+		HashMap<String, Integer> CV = new HashMap<String, Integer>();
+		for(String key : g.graph.keySet()){
+			CV.put(key, generator.nextInt(500));
+		}
+		*/
+		// ---------------------------------------------------------------------------
+		/**
+		 * k-Cores
+		 * bis ca. k=71
+		 */ 
+		int biggestK = 0;
+		for(int k = 80;k > 0; k--){
+			if( g.getKCore(k).size() > 0 ){
+				biggestK = k;
+				break;
+			}
+		}
+		System.out.println("BiggestK = " + String.valueOf(biggestK));
+				
+		FileOutputStream jsonFO = new FileOutputStream("flare.json");
+		PrintStream jsonPS = new PrintStream(jsonFO);
+		jsonPS.println("{");
+		jsonPS.println("  \"name\": \"all\",");
+		jsonPS.println("  \"children\": [");
+		
+		g.saveKCoreToJson(biggestK-8, biggestK, jsonPS, CV );
+		
+		jsonPS.println(" ]");
+		jsonPS.println("}");
+		jsonPS.close();
+		jsonFO.close();
+		
+		for(int k = biggestK - 10;k <= biggestK; k++){
+			System.out.println("Going to calc kCore for k=" + String.valueOf(k));
+			HashMap<String, HashMap<String, double[]>> kCore = g.getKCore(k);
+			System.out.println ( kCore.size() );
+		}
+		// ---------------------------------------------------------------------------
+
+		
 		/*
 		System.out.println("Going to get eigenvectors");
 		LinkedList<double[]> EVs = g.getMaximumEigenVector();
@@ -210,4 +260,5 @@ public class Program {
 		System.out.println("Program runs " + ( endTime-startTime ) / 1000 + " seconds" );
 		
 	}
+	
 }

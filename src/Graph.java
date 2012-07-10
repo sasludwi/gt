@@ -239,7 +239,6 @@ public class Graph {
 	 */
 	public HashMap<String, HashMap<String, double[]>> getKCore (int k) 
 	{
-		// TODO realize clone!
 		Cloner cloner = new Cloner();
 		
 		HashMap<String, HashMap<String, double[]>> kCore = cloner.deepClone(this.graph);
@@ -250,29 +249,34 @@ public class Graph {
 			oldSize = kCore.size();
 			
 			for ( String vertex : this.graph.keySet() ) 
-			{				
-				if(k <= kCore.get(vertex).size()) {
-					// OK!
-				} else {
-					// - delete the vertex itself 
-					kCore.remove(vertex);
-					
-					// - delete all outgoing edges of this vertex
-					for ( String otherVertex : this.graph.keySet() ) 
-					{
-						if (true == kCore.containsKey(otherVertex))
-							kCore.get(otherVertex).remove(vertex);
+			{			
+				if( kCore.containsKey(vertex) ){
+					if(k <= kCore.get(vertex).size()) {
+						// OK!
+					} else {
+						// - delete the vertex itself 
+						kCore.remove(vertex);
+						
+						// - delete all outgoing edges of this vertex
+						for ( String otherVertex : this.graph.keySet() ) 
+						{
+							if (true == kCore.containsKey(otherVertex))
+							{
+								if( kCore.get(otherVertex).containsKey(vertex)){
+									kCore.get(otherVertex).remove(vertex);
+								}
+							}
+						}
 					}
 				}
 			}
-			if ( oldSize == this.graph.size() ) { 
+			if ( oldSize == kCore.size() ) { 
 				break; 
 			}
 			
 		} while ( true );
 		
 		return kCore;
-		
 	}
 	
 	
@@ -553,7 +557,7 @@ public class Graph {
 				
 				RealMatrix m = new Array2DRowRealMatrix(matrixData);
 				EigenDecomposition ed = new EigenDecomposition(m, 0);
-				double[] evs = ed.getRealEigenvalues();
+				ed.getRealEigenvalues();
 				maxEV = ed.getEigenvector(0).toArray();
 				
 				compsEV.addLast(maxEV);
@@ -749,6 +753,68 @@ public class Graph {
 		
 		System.setOut(stdout);
 	}
+	
+	// also give as parameter: OldNodes 
+	public void saveKCoreToJson(int currentK, int biggestK, PrintStream PS, HashMap<String, Integer> values){
+		Cloner cloner = new Cloner();
+		
+		// Start
+		PS.println("{");
+		PS.println("\"name\": \"k=" + String.valueOf(currentK) + "\",");
+		PS.println("\"children\": [");
+		
+		// recursion
+		if(currentK < biggestK){
+			saveKCoreToJson(currentK + 1, biggestK, PS, values);
+		}
+		
+		// +++ save data +++
+		// get the new nodes of this k-core by substracting the old ones
+		// get nodes, to substract them in the next recursion level
+		HashMap<String, HashMap<String, double[]>> currentNodes = this.getKCore(currentK);
+		HashMap<String, HashMap<String, double[]>> nextNodes = this.getKCore(currentK + 1);
+		int n_size = nextNodes.size();
+		if(n_size > 0){
+			Set<String> ks =  cloner.deepClone( currentNodes.keySet() );
+			for(String vertex : ks ){
+				if(nextNodes.containsKey(vertex)){
+					currentNodes.remove(vertex);
+				}
+			}
+		}
+		
+		// now save at most 5 nodes (the most central ones)
+		boolean first = true;
+		for(int k = 0; k < 5; k++){
+			// find 5 times the biggest value and save it
+			int size = currentNodes.size();
+			if(size != 0){
+				Integer min = inf;
+				String min_node = "";
+				for(String node : currentNodes.keySet()){
+					if(values.get(node) < min){
+						min = values.get(node);
+						min_node = node;
+					}
+				}
+				// add "," between node entries, but not in the inner most level at first position
+				if(first && (currentK == biggestK)){
+					first = false; }
+				else{
+					PS.println(","); }
+				// save data
+				PS.println("{\"name\": \"" + min_node + "\", \"size\": " + String.valueOf(500 - min) + "}");
+				
+				//remove biggest value
+				currentNodes.remove(min_node);
+			}
+		}
+		
+		// End
+		PS.println("]");
+		PS.println("}");
+	}
+	
 }
 
 

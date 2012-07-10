@@ -1,0 +1,105 @@
+{
+  "name": "all",
+  "children": [
+{
+"name": "k=62",
+"children": [
+{
+"name": "k=63",
+"children": [
+{
+"name": "k=64",
+"children": [
+{
+"name": "k=65",
+"children": [
+{
+"name": "k=66",
+"children": [
+{
+"name": "k=67",
+"children": [
+{
+"name": "k=68",
+"children": [
+{
+"name": "k=69",
+"children": [
+{
+"name": "k=70",
+"children": [
+{"name": "HSF2", "size": 503}
+,
+{"name": "CUL4B", "size": 497}
+,
+{"name": "ZNF410", "size": 490}
+,
+{"name": "ZNF148", "size": 481}
+,
+{"name": "DPF2", "size": 481}
+]
+}
+,
+{"name": "ZBTB43", "size": 369}
+,
+{"name": "MSC", "size": 369}
+,
+{"name": "ZC3H7A", "size": 345}
+,
+{"name": "EIF3K", "size": 343}
+,
+{"name": "MYNN", "size": 340}
+]
+}
+,
+{"name": "TAX1BP1", "size": 355}
+,
+{"name": "SLC30A9", "size": 355}
+,
+{"name": "TP53", "size": 342}
+]
+}
+,
+{"name": "E2F3", "size": 383}
+,
+{"name": "ZNF75D", "size": 360}
+,
+{"name": "NUPL2", "size": 337}
+,
+{"name": "SLC2A4RG", "size": 335}
+,
+{"name": "ZBED1", "size": 294}
+]
+}
+,
+{"name": "ZBTB17", "size": 302}
+,
+{"name": "ZKSCAN5", "size": 265}
+]
+}
+,
+{"name": "ZHX2", "size": 351}
+,
+{"name": "RXRB", "size": 323}
+]
+}
+,
+{"name": "RBM5", "size": 356}
+,
+{"name": "XPA", "size": 356}
+,
+{"name": "NR2F6", "size": 324}
+,
+{"name": "ZNF24", "size": 288}
+]
+}
+,
+{"name": "MYBL2", "size": 367}
+]
+}
+,
+{"name": "SCAPER", "size": 306}
+]
+}
+ ]
+}
