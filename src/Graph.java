@@ -691,46 +691,70 @@ public class Graph {
 	
 	/**
 	 * 
+	 * @param max
+	 * @param graphs
 	 */
-	public void exportDescVertexNeighbours (int max) 
+	public static void exportDescVertexNeighbours (HashMap <Double, Graph> graphs, int max) 
 	{
 		PrintStream stdout = System.out;
 		
 		try {
-			// System.setOut(new PrintStream(new File("./web/forcegraph_files/flare.json")));
-			System.setOut(new PrintStream(new File("./web/bubble_files/flare.json")));
+			System.setOut(new PrintStream(new File("./web/barchart_files/data.json")));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
 		
 		int i = 0;
-		String [][] vertexes = new String [this.graph.keySet().size()][2];
+		HashMap <Double, String [][]> vertexNeighbours = new HashMap <Double, String [][]> ();
+		String [][] tmp = null;
+		ArrayList <String> vertexes = new ArrayList <String> ();
 		
-		for ( String vertex : this.graph.keySet() )
+		for ( double theta : graphs.keySet() ) 
 		{
-			// System.out.println ( vertex + " -> " + g.getNumberOfVertexNeighbours(vertex));
-			vertexes [i++] = new String[] { vertex, String.valueOf(this.getNumberOfVertexNeighbours(vertex)) };
+			i = 0;
+			
+			tmp = vertexNeighbours.put(
+				theta,
+				new String [graphs.get(theta).getVertexes().size()][2]
+			);
+			
+			for ( String vertex : graphs.get(theta).getVertexes() )
+			{
+				try {
+					// System.out.println ( vertex + " -> " + g.getNumberOfVertexNeighbours(vertex));
+					vertexNeighbours.get(theta) [i++] = new String[] { 
+						vertex, 
+						String.valueOf(graphs.get(theta).getNumberOfVertexNeighbours(vertex))
+					};
+				} catch ( Exception e ) {
+					System.out.println (e.getMessage());
+				}
+				
+				if (-1 == vertexes.indexOf(vertex)) {
+					vertexes.add(vertex);
+				}
+			}
+			
+			Arrays.sort(vertexNeighbours.get(theta), new Comparator<Object>() {
+		        @Override
+		        public int compare(Object o1, Object o2) {
+		            // cast the object args back to string arrays
+		            String[] row1 = (String[])o1;
+		            String[] row2 = (String[])o2;
+	
+		            // compare the desired column values
+		            return Integer.valueOf(row1 [1]) < Integer.valueOf(row2 [1]) ? 1 : 0;
+		        }
+		    });
 		}
-		
-		Arrays.sort(vertexes, new Comparator<Object>() {
-	        @Override
-	        public int compare(Object o1, Object o2) {
-	            // cast the object args back to string arrays
-	            String[] row1 = (String[])o1;
-	            String[] row2 = (String[])o2;
-
-	            // compare the desired column values
-	            return Integer.valueOf(row1 [1]) < Integer.valueOf(row2 [1]) ? 1 : 0;
-	        }
-	    });
 
 		boolean first = true;
 		i = 0;
 		
-		System.out.println ("{ \"name\":\"center\", \"children\": [");
+		System.out.println ("{ \"categories\": [");
 		
-		for ( String [] ele : vertexes )
+		for ( String vertex : vertexes )
 		{
 			if ( first == false ) {
 				System.out.print(",");
@@ -738,18 +762,52 @@ public class Graph {
 				first = false;
 			}
 			
-			System.out.print("{");
-			
-			System.out.println ("\"name\":\"" + ele [0] + "\",");
-			System.out.println ("\"size\":\"" + (Integer.valueOf(ele [1])*1000) + "\"");
-
-			
-			System.out.println ("}");
+			System.out.println ("\"" + vertex + "\"");
 			
 			if ( i++ == max ) break;
 		}
 		
-		System.out.println ("]}");
+		i = 0;
+		first = true;
+		
+		System.out.println ("],");
+		System.out.println ("\"series\": [");
+		
+		for ( double theta : graphs.keySet() ) 
+		{
+			if ( first == false ) {
+				System.out.print(",");
+			} else {
+				first = false;
+			}
+			
+			System.out.println ("{");
+			System.out.println ("\"name\": \"" + theta + "\",");
+	        System.out.println ("\"data\": [");
+	        
+	        first = true;
+	       
+	        for ( String vertex : graphs.get(theta).getVertexes() )
+			{
+				if ( first == false ) {
+					System.out.print(",");
+				} else {
+					first = false;
+				}
+				
+				System.out.println (graphs.get(theta).getNumberOfVertexNeighbours(vertex));
+				
+				if ( i++ == max ) break;
+			}
+	        
+	        i = 0;
+			
+	        System.out.println ("]");
+	        System.out.println ("}");
+		}
+			
+		System.out.println ("]");
+		System.out.println ("}");
 		
 		System.setOut(stdout);
 	}
