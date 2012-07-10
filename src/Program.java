@@ -21,6 +21,7 @@ public class Program {
 		double[] thetas = {0.00001, 0.0002, 0.0005, 0.001, 0.002, 0.01, 0.02, 0.05, 0.09, 0.1};
 		
 		// TODO Ask the user about the threshold
+		Graph g = new Graph ();
 		
 		// task 1
 		if( makePlots )
@@ -47,7 +48,7 @@ public class Program {
 			// for each theta value
 			for (double threshold : thetas) 
 			{
-				Graph g = new Graph ();
+				g = new Graph ();
 				g.loadGraphFile("./data/TFcvscCORTab.txt", threshold);	// read in a file
 				
 				// (a) theta vs number edges
@@ -253,7 +254,7 @@ public class Program {
 		
 		for ( double theta : thetas ) 
 		{
-			Graph g = new Graph ();
+			g = new Graph ();
 			g.loadGraphFile("./data/TFcvscCORTab.txt", theta);
 			graphs.put(theta, g);
 		}
