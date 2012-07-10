@@ -2,6 +2,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -16,14 +17,14 @@ public class Program {
 		long startTime = System.currentTimeMillis();
 		
 		boolean makePlots = false;
-		double singlethreshold = 0.00001;
+		// double singlethreshold = 0.00001;
+		double[] thetas = {0.00001, 0.0002, 0.0005, 0.001, 0.002, 0.01, 0.02, 0.05, 0.09, 0.1};
 		
 		// TODO Ask the user about the threshold
 		
 		// task 1
-		if( makePlots ){
-			double[] thetas = {0.00001, 0.00002, 0.00005, 0.0001, 0.0002, 0.0005, 0.001, 0.002, 0.005, 0.01, 0.02, 0.05};;
-			
+		if( makePlots )
+		{			
 			FileOutputStream edgesFO = null;
 			PrintStream edgesPS = null;
 			FileOutputStream componentFO = null;
@@ -106,9 +107,6 @@ public class Program {
 		}
 		
 		System.out.println("Going to load graph");
-		Graph g = new Graph ();
-		g.loadGraphFile("./data/TFcvscCORTab.txt", singlethreshold);	// read in a file
-		System.out.println ( "theta: " + singlethreshold + " - edges: " + g.getNumberOfEdges () + " - nodes: " + g.getVertexes().size());	
 		
 		/*
 		System.out.println("Going to get eigenvectors");
@@ -201,10 +199,20 @@ public class Program {
 		*/
 		// ---------------------------------------------------------------------------
 
+		HashMap <Double, Graph> graphs = new HashMap<Double, Graph> ();
+		
+		for ( double theta : thetas ) 
+		{
+			Graph g = new Graph ();
+			g.loadGraphFile("./data/TFcvscCORTab.txt", theta);
+			graphs.put(theta, g);
+		}
+		
+		// Export vertex / neighbours => barchart visualization
+		Graph.exportDescVertexNeighbours (graphs, 30);
+
 		long endTime = System.currentTimeMillis();
 		
-		g.exportDescVertexNeighbours(30);
-
 		System.out.println("");
 		System.out.println("---------------------------------");
 		System.out.println("Program runs " + ( endTime-startTime ) / 1000 + " seconds" );
