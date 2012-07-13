@@ -16,16 +16,51 @@ public class Program {
 				
 		long startTime = System.currentTimeMillis();
 		
-		boolean makePlots = true;
-		// double singlethreshold = 0.00001;
 		// 10Stk            10^-6     5*10^-6    10^-5   5*10^-5  10^-4   9*10^-4  10^-3   5*10^-3 
-		double[] thetas = {0.000001, 0.000005, 0.00001, 0.00005, 0.0001, 0.0009,  0.001,   0.005,  0.05,  0.09};
+		// double[] thetas = {0.000001, 0.000005, 0.00001, 0.00005, 0.0001, 0.0009,  0.001,   0.005,  0.05,  0.09};
+		double[] thetas = {0.000001, 0.005};
 		
-		// TODO Ask the user about the threshold
-		Graph gh = new Graph ();
-		Graph gc = new Graph ();
+		HashMap <Double, Graph> humanGraphs = new HashMap<Double, Graph> ();
+		HashMap <Double, Graph> apeGraphs = new HashMap<Double, Graph> ();
+		Graph g = new Graph ();
+		
+		for ( double theta : thetas ) 
+		{
+			// human
+			g = new Graph ();
+			g.loadGraphFile("./data/TFhvshCORTab.txt", theta);
+			humanGraphs.put(theta, g);
+			
+			// ape
+			g = new Graph ();
+			g.loadGraphFile("./data/TFcvscCORTab.txt", theta);
+			apeGraphs.put(theta, g);
+		}
+		
+		// Export vertex / neighbours => barchart visualization
+		// Graph.exportDescVertexNeighbours (graphs, 30);
+		
+		// Graph.exportThresholdVsNumberEdges(humanGraphs, apeGraphs);
+		
+		Graph.exportThresholdVsNumberComponents(humanGraphs, apeGraphs);
+
+		long endTime = System.currentTimeMillis();
+		
+		System.out.println("");
+		System.out.println("---------------------------------");
+		System.out.println("Program runs " + ( endTime-startTime ) / 1000 + " seconds" );		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		// task 1
+		/*
 		if( makePlots )
 		{		
 			FileOutputStream edgesJsonFO = null;
@@ -42,8 +77,8 @@ public class Program {
 			FileOutputStream compsFO = null;
 			PrintStream compsPS = null;
 			
-			edgesJsonFO = new FileOutputStream("web/threshold_vs_NumberEdges/data.dat");
-			edgesJsonPS = new PrintStream(edgesJsonFO);
+			edgesJsonFO = new FileOutputStream("web/threshold_vs_NumberEdges/data.jsopn");
+			edgesJsonPS =
 			
 			componentFO = new FileOutputStream("out/components.dat");
 			componentPS = new PrintStream(componentFO);
@@ -125,7 +160,8 @@ public class Program {
 			edgesFO.close();
 			System.out.println ("");
 		}
-		
+		*/
+		/*
 		System.out.println("Going to load graph");
 		gh.loadGraphFile("./data/TFhvshCORTab.txt", 0.00001);
 		
@@ -135,7 +171,7 @@ public class Program {
 			System.out.println(vertex + ": " + CV.get(vertex));
 		}
 		
-		/*
+		
 		// Testing purpose only
 		Random generator = new Random();
 		HashMap<String, Integer> CV = new HashMap<String, Integer>();
@@ -147,7 +183,7 @@ public class Program {
 		/**
 		 * k-Cores
 		 * bis ca. k=71
-		 */ 
+		
 		int biggestK = 0;
 		for(int k = 80;k > 0; k--){
 			if( gh.getKCore(k).size() > 0 ){
@@ -176,7 +212,7 @@ public class Program {
 			System.out.println ( kCore.size() );
 		}
 		// ---------------------------------------------------------------------------
-
+ */ 
 		
 		/*
 		System.out.println("Going to get eigenvectors");
@@ -267,25 +303,6 @@ public class Program {
 			}
 		}
 		*/
-		// ---------------------------------------------------------------------------
-
-		HashMap <Double, Graph> graphs = new HashMap<Double, Graph> ();
-		
-		for ( double theta : thetas ) 
-		{
-			gh = new Graph ();
-			gh.loadGraphFile("./data/TFhvshCORTab.txt", theta);
-			graphs.put(theta, gh);
-		}
-		
-		// Export vertex / neighbours => barchart visualization
-		Graph.exportDescVertexNeighbours (graphs, 30);
-
-		long endTime = System.currentTimeMillis();
-		
-		System.out.println("");
-		System.out.println("---------------------------------");
-		System.out.println("Program runs " + ( endTime-startTime ) / 1000 + " seconds" );
 		
 	}
 	

@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -688,7 +689,6 @@ public class Graph {
 		return statutes;
 	}
 	
-	
 	/**
 	 * 
 	 * @param max
@@ -873,6 +873,191 @@ public class Graph {
 		PS.println("}");
 	}
 	
+	/**
+	 * 
+	 * @param humanGraphs
+	 * @param apeGraphs
+	 */
+	public static void exportThresholdVsNumberEdges (HashMap <Double, Graph> humanGraphs, HashMap <Double, Graph> apeGraphs) 
+	{
+		PrintStream output;
+		try {
+			output = new PrintStream(new FileOutputStream("./web/threshold_vs_NumberEdges/data.json"));
+			
+			/**
+			 *  TODO nachsortieren der Keys
+			 */
+			/*
+			Arrays.sort(vertexNeighbours.get(theta), new Comparator<Object>() {
+		        @Override
+		        public int compare(Object o1, Object o2) {
+		            // cast the object args back to string arrays
+		            String[] row1 = (String[])o1;
+		            String[] row2 = (String[])o2;
+	
+		            // compare the desired column values
+		            return Integer.valueOf(row1 [1]) < Integer.valueOf(row2 [1]) ? 1 : 0;
+		        }
+		    });
+		    */
+			
+			boolean first = true;
+			
+			output.println ("{ \"categories\": [");
+			
+			for ( double theta : humanGraphs.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				output.println ("\"" + theta + "\"");
+			}
+			
+			first = true;
+			
+			output.println ("],");
+			output.println ("\"series\": [");
+			output.println ("{");
+			output.println ("\"name\": \"HUMAN\",");
+			output.println ("\"data\": [");
+			
+			for ( double theta : humanGraphs.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+		        
+		        output.println ("" + humanGraphs.get(theta).getNumberOfEdges() + "");
+			}
+			
+			output.println ("]");
+	        output.println ("},");
+	        
+	        first = true;
+	        
+	        output.println ("{");
+			output.println ("\"name\": \"CHIMPANZEE\",");
+			output.println ("\"data\": [");
+			
+			for ( double theta : apeGraphs.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+		        
+		        output.println ("" + apeGraphs.get(theta).getNumberOfEdges() + "");
+			}
+			
+			output.println ("]");
+	        output.println ("}");
+				
+			output.println ("]");
+			output.println ("}");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 
+	 * @param humanGraphs
+	 * @param apeGraphs
+	 */
+	public static void exportThresholdVsNumberComponents (HashMap <Double, Graph> humanGraphs, HashMap <Double, Graph> apeGraphs) 
+	{
+		PrintStream output;
+		try {
+			output = new PrintStream(new FileOutputStream("./web/threshold_vs_NumberComponents/data.json"));
+			
+			/**
+			 *  TODO nachsortieren der Keys
+			 */
+			/*
+			Arrays.sort(vertexNeighbours.get(theta), new Comparator<Object>() {
+		        @Override
+		        public int compare(Object o1, Object o2) {
+		            // cast the object args back to string arrays
+		            String[] row1 = (String[])o1;
+		            String[] row2 = (String[])o2;
+	
+		            // compare the desired column values
+		            return Integer.valueOf(row1 [1]) < Integer.valueOf(row2 [1]) ? 1 : 0;
+		        }
+		    });
+		    */
+			
+			boolean first = true;
+			
+			output.println ("{ \"categories\": [");
+			
+			for ( double theta : humanGraphs.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				output.println ("\"" + theta + "\"");
+			}
+			
+			first = true;
+			
+			output.println ("],");
+			output.println ("\"series\": [");
+			output.println ("{");
+			output.println ("\"name\": \"HUMAN\",");
+			output.println ("\"data\": [");
+			
+			for ( double theta : humanGraphs.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+		        
+		        output.println ("" + humanGraphs.get(theta).getComponents().size() + "");
+			}
+			
+			output.println ("]");
+	        output.println ("},");
+	        
+	        first = true;
+	        
+	        output.println ("{");
+			output.println ("\"name\": \"CHIMPANZEE\",");
+			output.println ("\"data\": [");
+			
+			for ( double theta : apeGraphs.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+		        
+		        output.println ("" + apeGraphs.get(theta).getComponents().size() + "");
+			}
+			
+			output.println ("]");
+	        output.println ("}");
+				
+			output.println ("]");
+			output.println ("}");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 
 
