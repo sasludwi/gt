@@ -1290,6 +1290,146 @@ public class Graph {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * 
+	 * @param humanGraphs
+	 * @param apeGraphs
+	 */
+	public static void exportThresholdVsEdgeWeights (HashMap <Double, Graph> humanGraphs, HashMap <Double, Graph> apeGraphs) 
+	{
+		PrintStream output;
+		try {
+			output = new PrintStream(new FileOutputStream("./web/threshold_vs_EdgeWeights/data.json"));
+			
+			// TODO: andere visualisierung
+			
+			boolean first = true;
+			
+			int [] humanWeights = new int [25];
+			int [] apeWeights = new int [25];
+			
+			output.println ("{ \"categories\": [");
+			
+			for ( int i = 0; i < 25; ++i ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				output.println ("\"" + (i*4) + "\"");
+				
+				humanWeights [i] = 0;
+				apeWeights [i] = 0;
+			}
+			
+			first = true;
+			boolean firstfirst = true;
+			double weight = 0;
+			
+			output.println ("],");
+			output.println ("\"series\": [");
+			
+			for ( double threshold : humanGraphs.keySet() ) 
+			{			
+				for ( int i = 0; i < 25; ++i ) {
+					humanWeights [i] = 0; apeWeights [i] = 0;
+				}
+			
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				for ( String startVertex : humanGraphs.get(threshold).getGraph().keySet() ) 
+				{
+					for ( String targetVertex : humanGraphs.get(threshold).getGraph().get(startVertex).keySet())
+					{
+						if ( humanGraphs.get(threshold).getGraph().get(startVertex).get(targetVertex) == null ) continue;
+						
+						weight = humanGraphs.get(threshold).getGraph().get(startVertex).get(targetVertex)[1];
+						
+						for ( int i = 0; i < 25; ++i ) {
+							if ( weight < (i*0.04) ) {
+								humanWeights [i-1] += 1;
+								break;
+							}
+						}
+					}
+				}
+
+				for ( String startVertex : apeGraphs.get(threshold).getGraph().keySet() ) 
+				{
+					for ( String targetVertex : apeGraphs.get(threshold).getGraph().get(startVertex).keySet())
+					{
+						if ( apeGraphs.get(threshold).getGraph().get(startVertex).get(targetVertex) == null ) continue;
+						
+						weight = apeGraphs.get(threshold).getGraph().get(startVertex).get(targetVertex)[1];
+						
+						for ( int i = 0; i < 25; ++i ) {
+							if ( weight < (i*0.04) ) {
+								apeWeights [i-1] += 1;
+								break;
+							}
+						}
+					}
+				}
+				
+				firstfirst = true;
+				
+				// Output data
+				// human
+				output.println ("{");
+				output.println ("\"name\": \"Human - " + threshold + "\",");
+				output.println ("\"data\": [");
+				
+				for ( int i = 0; i < 25; ++i ) 
+				{
+					if ( firstfirst == false ) {
+						output.print(",");
+					} else {
+						firstfirst = false;
+					}
+			        
+			        output.println (humanWeights [i]);
+				}
+				
+				output.println ("]");
+		        output.println ("},");
+		        
+		        firstfirst = true;
+		        
+		        // ape
+		        output.println ("{");
+				output.println ("\"name\": \"Chimpanzee - " + threshold + "\",");
+				output.println ("\"data\": [");
+				
+				for ( int i = 0; i < 25; ++i ) 
+				{
+					if ( firstfirst == false ) {
+						output.print(",");
+					} else {
+						firstfirst = false;
+					}
+			        
+			        output.println (apeWeights [i]);
+				}
+				
+				output.println ("]");
+		        output.println ("}");
+			}
+	        
+				
+			output.println ("]");
+			output.println ("}");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 
 
