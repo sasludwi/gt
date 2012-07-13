@@ -16,17 +16,21 @@ public class Program {
 				
 		long startTime = System.currentTimeMillis();
 		
-		boolean makePlots = false;
+		boolean makePlots = true;
 		// double singlethreshold = 0.00001;
 		// 10Stk            10^-6     5*10^-6    10^-5   5*10^-5  10^-4   9*10^-4  10^-3   5*10^-3 
 		double[] thetas = {0.000001, 0.000005, 0.00001, 0.00005, 0.0001, 0.0009,  0.001,   0.005,  0.05,  0.09};
 		
 		// TODO Ask the user about the threshold
-		Graph g = new Graph ();
+		Graph gh = new Graph ();
+		Graph gc = new Graph ();
 		
 		// task 1
 		if( makePlots )
-		{			
+		{		
+			FileOutputStream edgesJsonFO = null;
+			PrintStream edgesJsonPS = null;
+			
 			FileOutputStream edgesFO = null;
 			PrintStream edgesPS = null;
 			FileOutputStream componentFO = null;
@@ -37,6 +41,9 @@ public class Program {
 			PrintStream weightsPS = null;
 			FileOutputStream compsFO = null;
 			PrintStream compsPS = null;
+			
+			edgesJsonFO = new FileOutputStream("web/threshold_vs_NumberEdges/data.dat");
+			edgesJsonPS = new PrintStream(edgesJsonFO);
 			
 			componentFO = new FileOutputStream("out/components.dat");
 			componentPS = new PrintStream(componentFO);
@@ -49,21 +56,29 @@ public class Program {
 			// for each theta value
 			for (double threshold : thetas) 
 			{
-				g = new Graph ();
-				g.loadGraphFile("./data/TFcvscCORTab.txt", threshold);	// read in a file
+				gh = new Graph ();
+				gh.loadGraphFile("./data/TFhvshCORTab.txt", threshold);	// read in a file
+				
+				gc = new Graph ();
+				gc.loadGraphFile("./data/TFcvscCORTab.txt", threshold);	// read in a file
 				
 				// (a) theta vs number edges
-				edgesPS.println(String.valueOf(threshold) + "\t" + String.valueOf( g.getNumberOfEdges() ));
-				System.out.println ( "theta: " + threshold + " - edges: " + g.getNumberOfEdges () + " - nodes: " + g.getVertexes().size());	
+				// a.1 JSON
+				
+				
+				
+				// a.2 gnuplot
+				edgesPS.println(String.valueOf(threshold) + "\t" + String.valueOf( gh.getNumberOfEdges() ));
+				System.out.println ( "theta: " + threshold + " - edges: " + gh.getNumberOfEdges () + " - nodes: " + gh.getVertexes().size());	
 				
 				// (b) theta vs edge weights
 				weightsFO = new FileOutputStream("out/weights_" + String.valueOf(threshold) + ".dat");
 				weightsPS = new PrintStream(weightsFO);
 				weightsPS.println("# weights");
-				for ( String from : g.getGraph().keySet() ) {
-					for ( String to : g.getGraph().get(from).keySet() ) {
-						if(g.getGraph().get(from).get(to) != null){
-							double val = g.getGraph().get(from).get(to)[1];
+				for ( String from : gh.getGraph().keySet() ) {
+					for ( String to : gh.getGraph().get(from).keySet() ) {
+						if(gh.getGraph().get(from).get(to) != null){
+							double val = gh.getGraph().get(from).get(to)[1];
 							weightsPS.println(String.valueOf( val ));
 						}
 					}
@@ -76,15 +91,15 @@ public class Program {
 				degreesFO = new FileOutputStream("out/deg_" + String.valueOf(threshold) + ".dat");
 				degreesPS = new PrintStream(degreesFO);
 				degreesPS.println("# degree");
-				for ( String key : g.getGraph ().keySet() ) {
-					degreesPS.println(String.valueOf(g.getNumberOfVertexNeighbours (key)));
+				for ( String key : gh.getGraph ().keySet() ) {
+					degreesPS.println(String.valueOf(gh.getNumberOfVertexNeighbours (key)));
 				}
 				degreesFO.close();
 				degreesPS.close();
 				
 				
 				// (d) theta vs number of components
-				LinkedList<LinkedList<String>> compList = g.getComponents();
+				LinkedList<LinkedList<String>> compList = gh.getComponents();
 				
 				componentPS.println(String.valueOf(threshold) + "\t" + String.valueOf( compList.size() ));
 				System.out.println ( "theta: " + threshold + " - components: " + compList.size() );
@@ -101,6 +116,9 @@ public class Program {
 				
 			}
 			
+			edgesJsonFO.close();
+			edgesJsonPS.close();
+			
 			componentFO.close();
 			componentPS.close();
 			edgesPS.close();
@@ -109,10 +127,10 @@ public class Program {
 		}
 		
 		System.out.println("Going to load graph");
-		g.loadGraphFile("./data/TFcvscCORTab.txt", 0.00001);
+		gh.loadGraphFile("./data/TFhvshCORTab.txt", 0.00001);
 		
 		System.out.println("Going to get centroid values");
-		HashMap<String, Integer> CV = g.getCentroidValue();
+		HashMap<String, Integer> CV = gh.getCentroidValue();
 		for(String vertex : CV.keySet()){
 			System.out.println(vertex + ": " + CV.get(vertex));
 		}
@@ -132,7 +150,7 @@ public class Program {
 		 */ 
 		int biggestK = 0;
 		for(int k = 80;k > 0; k--){
-			if( g.getKCore(k).size() > 0 ){
+			if( gh.getKCore(k).size() > 0 ){
 				biggestK = k;
 				break;
 			}
@@ -145,7 +163,7 @@ public class Program {
 		jsonPS.println("  \"name\": \"all\",");
 		jsonPS.println("  \"children\": [");
 		
-		g.saveKCoreToJson(biggestK-8, biggestK, jsonPS, CV );
+		gh.saveKCoreToJson(biggestK-8, biggestK, jsonPS, CV );
 		
 		jsonPS.println(" ]");
 		jsonPS.println("}");
@@ -154,7 +172,7 @@ public class Program {
 		
 		for(int k = biggestK - 10;k <= biggestK; k++){
 			System.out.println("Going to calc kCore for k=" + String.valueOf(k));
-			HashMap<String, HashMap<String, double[]>> kCore = g.getKCore(k);
+			HashMap<String, HashMap<String, double[]>> kCore = gh.getKCore(k);
 			System.out.println ( kCore.size() );
 		}
 		// ---------------------------------------------------------------------------
@@ -255,9 +273,9 @@ public class Program {
 		
 		for ( double theta : thetas ) 
 		{
-			g = new Graph ();
-			g.loadGraphFile("./data/TFcvscCORTab.txt", theta);
-			graphs.put(theta, g);
+			gh = new Graph ();
+			gh.loadGraphFile("./data/TFhvshCORTab.txt", theta);
+			graphs.put(theta, gh);
 		}
 		
 		// Export vertex / neighbours => barchart visualization
