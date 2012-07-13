@@ -54,7 +54,7 @@
 			            },
 			            yAxis: {
 			                title: {
-			                    text: 'Number of edges'
+			                    text: 'Number of vertexes'
 			                },
 			                plotLines: [{
 			                    value: 0,
@@ -65,7 +65,7 @@
 			            tooltip: {
 			                formatter: function() {
 			                        return '<b>'+ this.series.name +'</b><br/>'+
-			                        this.x +': '+ this.y +' edges';
+			                        this.x +' vertexes have degree = '+ this.y;
 			                }
 			            },
 			            legend: {
