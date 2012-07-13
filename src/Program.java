@@ -137,8 +137,8 @@ public class Program {
 			}
 		}
 		System.out.println("BiggestK = " + String.valueOf(biggestK));
-				
-		FileOutputStream jsonFO = new FileOutputStream("flare.json");
+		
+		FileOutputStream jsonFO = new FileOutputStream("web/circlepack_files/flare.json");
 		PrintStream jsonPS = new PrintStream(jsonFO);
 		jsonPS.println("{");
 		jsonPS.println("  \"name\": \"all\",");
