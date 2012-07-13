@@ -18,7 +18,7 @@ public class Program {
 		
 		boolean makePlots = false;
 		// double singlethreshold = 0.00001;
-		double[] thetas = {0.00001, 0.0002, 0.0005, 0.001, 0.002, 0.01, 0.02, 0.05, 0.09, 0.1};
+		double[] thetas = {0.000001};
 		
 		// TODO Ask the user about the threshold
 		Graph g = new Graph ();
