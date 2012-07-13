@@ -108,7 +108,7 @@ public class Program {
 		}
 		
 		System.out.println("Going to load graph");
-		
+		g.loadGraphFile("./data/TFcvscCORTab.txt", 0.00001);
 		
 		System.out.println("Going to get centroid values");
 		HashMap<String, Integer> CV = g.getCentroidValue();
