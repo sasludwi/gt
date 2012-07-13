@@ -1,0 +1,57 @@
+/**
+ * Style Sheet adapt from http://www.genny.com/css/style.css
+ */
+
+@import url(http://fonts.googleapis.com/css?family=Merriweather);
+
+@font-face {
+    font-family: 'BauerBodoniStdRegular';
+    src: url('fonts/bauerbodonistd-roman-webfont.eot');
+    src: url('fonts/bauerbodonistd-roman-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/bauerbodonistd-roman-webfont.woff') format('woff'),
+         url('fonts/bauerbodonistd-roman-webfont.ttf') format('truetype'),
+         url('fonts/bauerbodonistd-roman-webfont.svg#BauerBodoniStdRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+h1         { font-size: 40px; font-weight: bold;}
+h2         { font-size: 25px;}
+a			{ color:#333;text-decoration:none;}
+body		{ width:100%;	height:100%;	margin-left: 10px; margin-right: 10px;	padding:0;	color:#333;	font-family: 'Merriweather', serif; overflow:hidden;font-size:12px;}
+header		{ width:100%; height:110px; background:url(../images/bg-header.png) repeat-x bottom; position:fixed; top:0px;z-index:20;overflow:hidden;}
+#headCont	{ width:980px; margin:0 auto; text-transform:uppercase;}
+#logo		{ margin:20px 60px 0 60px; display:block;float:left;}
+#nav		{ float:left;font-family: 'Merriweather', serif;margin-top:45px;height:32px;}
+#nav li	{ float:left;margin:0 15px;cursor:pointer; }
+#nav li a	{ padding:0 5px;letter-spacing:0.5px;font-size:11px;color:#999;}
+#nav li span{width:0; display:block; border-bottom:1px solid #333;padding-top:7px;}
+#nav li.active .underline{width:100%;}
+
+.menu{
+    width: 63%;
+    background-color: #333; 
+    margin-right: 10px;
+}
+
+.menu ul{
+    margin: 0; padding: 0;
+    float: left;}
+ 
+.menu ul li{
+    display: inline;}
+ 
+.menu ul li a{
+    float: left; text-decoration: none;
+    color: white; 
+    padding: 10.5px 11px;
+    background-color: #333; }
+ 
+.menu ul li a:visited{
+    color: white;}
+ 
+.menu ul li a:hover, .menu ul li .current{
+    color: #fff;
+    background-color:#0b75b2;}
+

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!-- Based on HighCharts Demo - http://jsfiddle.net/aXFrw/4/ -->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <script src="http://d3js.org/d3.v2.js"></script>
+        <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    ​</head>
+<body>
+        
+    <div style="font-size:30px; margin-top:-20px; margin-bottom:10px;">Distribution of vertex neighbours for different thresholds</div>
+    
+    <div style="font-size:20px; margin-bottom:20px;">
+        In this visualization you can see vertexes and the number of their neighbours. 
+        The y-axis represents vertexes with the most neighbours in general.
+        The x-axis represents the number of neighbours of each vertex.
+        On right top you see a simple menu which contains the different thresholds, which were used to read in a graph file.
+    </div>
+    
+    <hr>
+    
+    <div id="container" style="min-width: 400px; height: 900px; margin: 0 auto"></div>
+    
+    <script type="text/javascript">
+        $(function () {
+            var chart;
+            
+            $(document).ready(function() {
+                
+                var renderChart = function (categories, series) {
+                    
+                    console.log (categories);
+                    console.log (series);
+                    
+                    // render the chart after request is complete
+                    chart = new Highcharts.Chart({
+                        chart: {
+                            renderTo: 'container',
+                            type: 'bar',
+                            inverted: true
+                        },
+                        title: {
+                            text: 'Threshold distribution'
+                        },
+                        subtitle: {
+                            text: ''
+                        },
+                        xAxis: {
+                            categories: categories,
+                            title: {
+                                text: 'Gene names'
+                            }
+                        },
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Number of neighbours',
+                                align: 'high'
+                            },
+                            labels: {
+                                overflow: 'justify'
+                            }                            
+                        },
+                        tooltip: {
+                            formatter: function() {
+                                return '' + this.series.name +': '+ this.y +' neighbours'
+                            }
+                        },
+                        plotOptions: {
+                            bar: {
+                                dataLabels: {
+                                    enabled: true
+                                }
+                            }
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'top',
+                            x: -100,
+                            y: 100,
+                            floating: true,
+                            borderWidth: 1,
+                            backgroundColor: '#FFFFFF',
+                            shadow: true
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        series: series
+                    });
+                };
+                
+                d3.json("./threshold_vs_Centroids/data.json", function(json) {  
+                    console.log (json);
+                    renderChart (json.categories, json.series);
+                });
+            });                
+        });
+    </script>
+
+</body>
+</html>

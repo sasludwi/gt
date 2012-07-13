@@ -692,14 +692,14 @@ public class Graph {
 	/**
 	 * 
 	 * @param max
-	 * @param graphs
+	 * @param humanGraphs
 	 */
-	public static void exportDescVertexNeighbours (HashMap <Double, Graph> graphs, int max) 
+	public static void exportDescVertexNeighbours (HashMap <Double, Graph> humanGraphs, HashMap <Double, Graph> apeGraphs, int max) 
 	{
 		PrintStream stdout = System.out;
 		
 		try {
-			System.setOut(new PrintStream(new File("./web/barchart_files/data.json")));
+			System.setOut(new PrintStream(new File("./web/Vertex_Neighbours/data.json")));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -710,22 +710,22 @@ public class Graph {
 		String [][] tmp = null;
 		ArrayList <String> vertexes = new ArrayList <String> ();
 		
-		for ( double theta : graphs.keySet() ) 
+		for ( double theta : humanGraphs.keySet() ) 
 		{
 			i = 0;
 			
 			tmp = vertexNeighbours.put(
 				theta,
-				new String [graphs.get(theta).getVertexes().size()][2]
+				new String [humanGraphs.get(theta).getVertexes().size()][2]
 			);
 			
-			for ( String vertex : graphs.get(theta).getVertexes() )
+			for ( String vertex : humanGraphs.get(theta).getVertexes() )
 			{
 				try {
 					// System.out.println ( vertex + " -> " + g.getNumberOfVertexNeighbours(vertex));
 					vertexNeighbours.get(theta) [i++] = new String[] { 
 						vertex, 
-						String.valueOf(graphs.get(theta).getNumberOfVertexNeighbours(vertex))
+						String.valueOf(humanGraphs.get(theta).getNumberOfVertexNeighbours(vertex))
 					};
 				} catch ( Exception e ) {
 					System.out.println (e.getMessage());
@@ -773,7 +773,7 @@ public class Graph {
 		System.out.println ("],");
 		System.out.println ("\"series\": [");
 		
-		for ( double theta : graphs.keySet() ) 
+		for ( double theta : humanGraphs.keySet() ) 
 		{
 			if ( first == false ) {
 				System.out.print(",");
@@ -782,12 +782,12 @@ public class Graph {
 			}
 			
 			System.out.println ("{");
-			System.out.println ("\"name\": \"" + theta + "\",");
+			System.out.println ("\"name\": \"Human - " + theta + "\",");
 	        System.out.println ("\"data\": [");
 	        
 	        first = true;
 	       
-	        for ( String vertex : graphs.get(theta).getVertexes() )
+	        for ( String vertex : humanGraphs.get(theta).getVertexes() )
 			{
 				if ( first == false ) {
 					System.out.print(",");
@@ -795,7 +795,42 @@ public class Graph {
 					first = false;
 				}
 				
-				System.out.println (graphs.get(theta).getNumberOfVertexNeighbours(vertex));
+				System.out.println (humanGraphs.get(theta).getNumberOfVertexNeighbours(vertex));
+				
+				if ( i++ == max ) break;
+			}
+	        
+	        i = 0;
+			
+	        System.out.println ("]");
+	        System.out.println ("}");
+		}
+		
+		i = 0;
+		
+		for ( double theta : apeGraphs.keySet() ) 
+		{
+			if ( first == false ) {
+				System.out.print(",");
+			} else {
+				first = false;
+			}
+			
+			System.out.println ("{");
+			System.out.println ("\"name\": \"Ape - " + theta + "\",");
+	        System.out.println ("\"data\": [");
+	        
+	        first = true;
+	       
+	        for ( String vertex : apeGraphs.get(theta).getVertexes() )
+			{
+				if ( first == false ) {
+					System.out.print(",");
+				} else {
+					first = false;
+				}
+				
+				System.out.println (apeGraphs.get(theta).getNumberOfVertexNeighbours(vertex));
 				
 				if ( i++ == max ) break;
 			}
@@ -1328,6 +1363,7 @@ public class Graph {
 			first = true;
 			boolean firstfirst = true;
 			double weight = 0;
+			int j = 0;
 			
 			output.println ("],");
 			output.println ("\"series\": [");
@@ -1353,8 +1389,9 @@ public class Graph {
 						weight = humanGraphs.get(threshold).getGraph().get(startVertex).get(targetVertex)[1];
 						
 						for ( int i = 0; i < 25; ++i ) {
+							
 							if ( weight < (i*0.04) ) {
-								humanWeights [i-1] += 1;
+								humanWeights [0 < i ? i-1 : 0] += 1;
 								break;
 							}
 						}
@@ -1371,7 +1408,7 @@ public class Graph {
 						
 						for ( int i = 0; i < 25; ++i ) {
 							if ( weight < (i*0.04) ) {
-								apeWeights [i-1] += 1;
+								apeWeights [0 < i ? i-1 : 0] += 1;
 								break;
 							}
 						}
@@ -1425,6 +1462,106 @@ public class Graph {
 				
 			output.println ("]");
 			output.println ("}");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+
+	/**
+	 * 
+	 * @param humanGraphs
+	 * @param apeGraphs
+	 */
+	public static void exportFixedThresholdVsEigenwert (HashMap <Double, Graph> humanGraphs, HashMap <Double, Graph> apeGraphs, int max) 
+	{
+		PrintStream output;
+		try {
+			output = new PrintStream(new FileOutputStream("./web/threshold_vs_Centroids/data.json"));
+			
+			double threshold = 0;
+			boolean first = true;
+			
+			int i = 0;
+			
+			for ( double t : humanGraphs.keySet()) {
+				threshold = t;
+				break;
+			}
+			
+			HashMap <String, Integer> humanCentroids = humanGraphs.get(threshold).getCentroidValue();
+			HashMap <String, Integer> apeCentroids = apeGraphs.get(threshold).getCentroidValue();
+			
+			// TODO sort centroids
+			
+			output.println ("{ \"categories\": [");
+			
+			for ( String vertex : humanCentroids.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				output.println ("\"" + vertex + "\"");
+				
+				if ( i++ == max ) break;
+			}
+			
+			first = true;
+			i = 0;
+			
+			output.println ("],");
+			output.println ("\"series\": [");
+			
+			output.println ("{");
+			output.println ("\"name\": \"Human - " + threshold + "\",");
+			output.println ("\"data\": [");
+			
+			for ( String vertex : humanCentroids.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				output.println ( humanCentroids.get(vertex) );
+				
+				if ( i++ == max ) break;
+			}
+			
+			output.println ("]");
+			output.println ("},");
+			
+			i = 0;
+			first = true;
+
+			output.println ("{");
+			output.println ("\"name\": \"Ape - " + threshold + "\",");
+			output.println ("\"data\": [");
+			
+			for ( String vertex : apeCentroids.keySet() ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				output.println ( apeCentroids.get(vertex) );
+				
+				if ( i++ == max ) break;
+			}
+			
+			output.println ("]");
+			output.println ("}");
+			
+			output.println ("]");
+			output.println ("}");
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
