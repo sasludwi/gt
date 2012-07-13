@@ -42,8 +42,10 @@ public class Program {
 		
 		// Graph.exportThresholdVsNumberEdges(humanGraphs, apeGraphs);
 		
-		Graph.exportThresholdVsNumberComponents(humanGraphs, apeGraphs);
-
+		// Graph.exportThresholdVsNumberComponents(humanGraphs, apeGraphs);
+		
+		Graph.exportThresholdVsDegreeDistribution(humanGraphs, apeGraphs);
+		
 		long endTime = System.currentTimeMillis();
 		
 		System.out.println("");

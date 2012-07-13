@@ -1,0 +1,92 @@
+
+<meta http-equiv="Context-Type" content="text/html; charset=UTF-8">
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Threshold vs. Degree Distribution</title>
+        <script src="http://d3js.org/d3.v2.js"></script>
+        <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    ​</head>
+<body>
+        
+    <div style="font-size:30px; margin-top:-20px; margin-bottom:10px;">Threshold vs. Degree Distribution</div>
+    
+    <div style="font-size:20px; margin-bottom:20px;">
+        
+    </div>
+    
+    <hr>
+    
+    <div id="container" style="min-width: 400px; height: 900px; margin-bottom: 100px;"></div>
+    
+    <script type="text/javascript">
+        $(function () {
+            var chart;
+            
+            $(document).ready(function() {
+                
+                var renderChart = function (categories, series) {
+                    
+                    console.log (categories);
+                    console.log (series);
+                    
+                    // render the chart after request is complete
+                    chart = new Highcharts.Chart({
+                        chart: {
+			                renderTo: 'container',
+			                type: 'line',
+			                marginRight: 130,
+			                marginBottom: 25
+			            },
+			            title: {
+			                text: '',
+			                x: -20 //center
+			            },
+			            subtitle: {
+			                text: '',
+			                x: -20
+			            },
+			            xAxis: {
+			                categories: categories
+			            },
+			            yAxis: {
+			                title: {
+			                    text: 'Number of edges'
+			                },
+			                plotLines: [{
+			                    value: 0,
+			                    width: 1,
+			                    color: '#808080'
+			                }]
+			            },
+			            tooltip: {
+			                formatter: function() {
+			                        return '<b>'+ this.series.name +'</b><br/>'+
+			                        this.x +': '+ this.y +' edges';
+			                }
+			            },
+			            legend: {
+			                layout: 'vertical',
+			                align: 'right',
+			                verticalAlign: 'top',
+			                x: -10,
+			                y: 100,
+			                borderWidth: 0
+			            },
+						series: series
+                    });
+                };
+                
+                d3.json("./threshold_vs_DegreeDistribution/data.json", function(json) {  
+                    console.log (json);
+                    renderChart (json.categories, json.series);
+                });
+            });                
+        });
+    </script>
+
+</body>
+</html>
