@@ -1174,6 +1174,122 @@ public class Graph {
 			e.printStackTrace();
 		}
 	}
+
+	/**
+	 * 
+	 * @param humanGraphs
+	 * @param apeGraphs
+	 */
+	public static void exportThresholdVsComponentSize (HashMap <Double, Graph> humanGraphs, HashMap <Double, Graph> apeGraphs) 
+	{
+		PrintStream output;
+		try {
+			output = new PrintStream(new FileOutputStream("./web/threshold_vs_ComponentSize/data.json"));
+			
+			// TODO: andere visualisierung
+			
+			boolean first = true;
+			
+			int [] humanDegrees = new int [705];
+			int [] apeDegrees = new int [705];
+			int index = 0;
+			
+			output.println ("{ \"categories\": [");
+			
+			for ( int i = 0; i < 705; ++i ) 
+			{
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				output.println ("\"" + i + "\"");
+				
+				humanDegrees [i] = 0;
+				apeDegrees [i] = 0;
+			}
+			
+			first = true;
+			boolean firstfirst = true;
+			
+			output.println ("],");
+			output.println ("\"series\": [");
+			
+			for ( double threshold : humanGraphs.keySet() ) 
+			{			
+				for ( int i = 0; i < 705; ++i ) {
+					humanDegrees [i] = 0; apeDegrees [i] = 0;
+				}
+			
+				if ( first == false ) {
+					output.print(",");
+				} else {
+					first = false;
+				}
+				
+				for ( LinkedList<String> component : humanGraphs.get(threshold).getComponents() ) 
+				{
+					humanDegrees [component.size()] += 1;
+				}
+
+				for ( LinkedList<String> component : apeGraphs.get(threshold).getComponents() ) 
+				{
+					apeDegrees [component.size()] += 1;
+				}
+				
+				firstfirst = true;
+				
+				// Output data
+				// human
+				output.println ("{");
+				output.println ("\"name\": \"Human - " + threshold + "\",");
+				output.println ("\"data\": [");
+				
+				for ( int i = 0; i < 705; ++i ) 
+				{
+					if ( firstfirst == false ) {
+						output.print(",");
+					} else {
+						firstfirst = false;
+					}
+			        
+			        output.println (humanDegrees [i]);
+				}
+				
+				output.println ("]");
+		        output.println ("},");
+		        
+		        firstfirst = true;
+		        
+		        // ape
+		        output.println ("{");
+				output.println ("\"name\": \"Chimpanzee - " + threshold + "\",");
+				output.println ("\"data\": [");
+				
+				for ( int i = 0; i < 705; ++i ) 
+				{
+					if ( firstfirst == false ) {
+						output.print(",");
+					} else {
+						firstfirst = false;
+					}
+			        
+			        output.println (apeDegrees [i]);
+				}
+				
+				output.println ("]");
+		        output.println ("}");
+			}
+	        
+				
+			output.println ("]");
+			output.println ("}");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }
 
 
