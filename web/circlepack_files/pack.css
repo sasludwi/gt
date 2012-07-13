@@ -1,15 +1,16 @@
 circle {
   fill: rgb(31, 119, 180);
-  fill-opacity: .25;
+  fill-opacity: .10;
   stroke: rgb(31, 119, 180);
   stroke-width: 1px;
 }
 
 .leaf circle {
-  fill: #ff7f0e;
+  fill: #A97344;
   fill-opacity: 1;
 }
 
 text {
-  font: 10px sans-serif;
+  font: 11px sans-serif;
+  color: #000000;
 }

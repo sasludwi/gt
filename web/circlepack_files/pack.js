@@ -1,5 +1,5 @@
-var width = 500,
-    height = 500,
+var width = 1000,
+    height = 1000,
     format = d3.format(",d");
 
 var pack = d3.layout.pack()
