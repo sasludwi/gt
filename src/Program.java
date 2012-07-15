@@ -69,6 +69,57 @@ public class Program {
 		
 		if( makePlots )
 		{	
+			
+			// k-core Stuff
+			if(true)
+			{
+				gh = new Graph ();
+				gh.loadGraphFile("./data/TFhvshCORTab.txt", 0.00001);	// read in a file
+
+				gc = new Graph ();
+				gc.loadGraphFile("./data/TFcvscCORTab.txt", 0.00001);	// read in a file
+				
+				System.out.println("Going to get centroid values");
+				HashMap<String, Integer> CV_h = gh.getCentroidValue();
+				for(String vertex : CV_h.keySet()){
+					System.out.println(vertex + ": " + CV_h.get(vertex));
+				}
+				
+				System.out.println("Going to get centroid values");
+				HashMap<String, Integer> CV_c = gc.getCentroidValue();
+				for(String vertex : CV_c.keySet()){
+					System.out.println(vertex + ": " + CV_c.get(vertex));
+				}
+				
+				
+				int biggestK_h = 0;
+				for(int k = 300;k > 0; k--){
+					if( gh.getKCore(k).size() > 0 ){
+						biggestK_h = k;
+						break;
+					}
+				}
+				System.out.println("BiggestK_h = " + String.valueOf(biggestK_h));
+
+				FileOutputStream jsonFO_h = new FileOutputStream("web/flare_h.json");
+				PrintStream jsonPS_h = new PrintStream(jsonFO_h);
+				gh.saveKCoreToJson(biggestK_h-9, biggestK_h, jsonPS_h, CV_h);
+				
+				int biggestK_c = 0;
+				for(int k = 300;k > 0; k--){
+					if( gc.getKCore(k).size() > 0 ){
+						biggestK_c = k;
+						break;
+					}
+				}
+				System.out.println("BiggestK_c = " + String.valueOf(biggestK_c));
+
+				FileOutputStream jsonFO_c = new FileOutputStream("web/flare_c.json");
+				PrintStream jsonPS_c = new PrintStream(jsonFO_c);
+				gc.saveKCoreToJson(biggestK_c-9, biggestK_c, jsonPS_c, CV_c);
+			}
+			
+			
 			FileOutputStream edgesFO = null;
 			PrintStream edgesPS = null;
 			FileOutputStream componentFO = null;
@@ -195,26 +246,6 @@ public class Program {
 			edgesFO.close();
 			System.out.println ("");
 		}
-		
-		
-		
-		
-		
-		
-		
-		// k-core Stuff
-		/*
-		System.out.println("Going to load graph");
-		gh.loadGraphFile("./data/TFhvshCORTab.txt", 0.00001);
-
-		System.out.println("Going to get centroid values");
-		HashMap<String, Integer> CV = gh.getCentroidValue();
-		for(String vertex : CV.keySet()){
-			System.out.println(vertex + ": " + CV.get(vertex));
-		}
-		*/
-		
-		
 		
 		
 		long endTime = System.currentTimeMillis();
