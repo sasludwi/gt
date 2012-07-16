@@ -15,9 +15,8 @@ public class Program {
 		long startTime = System.currentTimeMillis();
 		
 		// 10Stk            10^-6     5*10^-6    10^-5   5*10^-5  10^-4   9*10^-4  10^-3   5*10^-3 
-		// double[] thetas = {0.000001, 0.000005, 0.00001, 0.00005, 0.0001, 0.0009,  0.001,   0.005,  0.05,  0.09};
+		double[] thetas = {0.000001, 0.000005, 0.00001, 0.00005, 0.0001, 0.0009,  0.001,   0.005,  0.05,  0.09};
 		
-		/*
 		HashMap <Double, Graph> humanGraphs = new HashMap<Double, Graph> ();
 		HashMap <Double, Graph> apeGraphs = new HashMap<Double, Graph> ();
 		Graph g = new Graph ();
@@ -36,29 +35,26 @@ public class Program {
 		}
 		
 		// Export vertex / neighbours => barchart visualization
-		Graph.exportDescVertexNeighbours (humanGraphs, apeGraphs, 30);
+		// Graph.exportDescVertexNeighbours (humanGraphs, apeGraphs, 30);
 		
-		Graph.exportThresholdVsNumberEdges(humanGraphs, apeGraphs);
+		// Graph.exportThresholdVsNumberEdges(humanGraphs, apeGraphs);
 		
 		Graph.exportThresholdVsNumberComponents(humanGraphs, apeGraphs);
 		
-		Graph.exportThresholdVsDegreeDistribution(humanGraphs, apeGraphs);
+		// Graph.exportThresholdVsDegreeDistribution(humanGraphs, apeGraphs);
 		
-		Graph.exportThresholdVsComponentSize(humanGraphs, apeGraphs);
+		// Graph.exportThresholdVsComponentSize(humanGraphs, apeGraphs);
 		
-		Graph.exportThresholdVsEdgeWeights(humanGraphs, apeGraphs);
+		// Graph.exportThresholdVsEdgeWeights(humanGraphs, apeGraphs);
 		
-		Graph.exportFixedThresholdVsEigenwert(humanGraphs, apeGraphs, 30);
-		*/
-		
-		
+		// Graph.exportFixedThresholdVsEigenwert(humanGraphs, apeGraphs, 30);		
 		
 		// GNU-Plot Stuff
 		
 		// 6Stk             10^-6     10^-5     10^-4   10^-3   10^-2 
-		double[] thetas = {0.000001,  0.00001, 0.0001,  0.001,   0.01,  0.05};
+		// double[] thetas = {0.000001,  0.00001, 0.0001,  0.001,   0.01,  0.05};
 				
-		
+		/*
 		boolean makePlots = true;
 		Graph gh = new Graph ();
 		Graph gc = new Graph ();
@@ -242,7 +238,7 @@ public class Program {
 			edgesFO.close();
 			System.out.println ("");
 		}
-		
+		*/
 		
 		long endTime = System.currentTimeMillis();
 		

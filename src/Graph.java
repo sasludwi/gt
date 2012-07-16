@@ -1052,7 +1052,17 @@ public class Graph {
 			output.println ("\"name\": \"HUMAN\",");
 			output.println ("\"data\": [");
 			
+			int [] coms = new int [humanGraphs.keySet().size()];
+			int i = 0;
+			
 			for ( double theta : humanGraphs.keySet() ) 
+			{
+				coms [i++] = humanGraphs.get(theta).getComponents().size();
+			}
+			
+			Arrays.sort(coms);
+
+			for ( int componentSize : coms ) 
 			{
 				if ( first == false ) {
 					output.print(",");
@@ -1060,13 +1070,15 @@ public class Graph {
 					first = false;
 				}
 		        
-		        output.println ("" + humanGraphs.get(theta).getComponents().size() + "");
+		        output.println (componentSize);
 			}
 			
 			output.println ("]");
 	        output.println ("},");
 	        
 	        first = true;
+	        coms = new int [apeGraphs.keySet().size()];
+	        i = 0;
 	        
 	        output.println ("{");
 			output.println ("\"name\": \"CHIMPANZEE\",");
@@ -1074,13 +1086,20 @@ public class Graph {
 			
 			for ( double theta : apeGraphs.keySet() ) 
 			{
+				coms [i++] = apeGraphs.get(theta).getComponents().size();
+			}
+			
+			Arrays.sort(coms);
+			
+			for ( int componentSize : coms ) 
+			{
 				if ( first == false ) {
 					output.print(",");
 				} else {
 					first = false;
 				}
 		        
-		        output.println ("" + apeGraphs.get(theta).getComponents().size() + "");
+		        output.println (componentSize);
 			}
 			
 			output.println ("]");

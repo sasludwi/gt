@@ -8,21 +8,31 @@
         <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="http://code.highcharts.com/modules/exporting.js"></script>
+        <link href="main.css" rel="stylesheet" type="text/css" />
     ​</head>
 <body>
-        
-    <div style="font-size:30px; margin-top:-20px; margin-bottom:10px;">Distribution of vertex neighbours for different thresholds</div>
     
-    <div style="font-size:20px; margin-bottom:20px;">
-        In this visualization you can see vertexes and the number of their neighbours. 
-        The y-axis represents vertexes with the most neighbours in general.
-        The x-axis represents the number of neighbours of each vertex.
-        On right top you see a simple menu which contains the different thresholds, which were used to read in a graph file.
+    <div class="menu">
+        <ul>
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="threshold_vs_NumberEdges.html">Number of edges</a></li>
+            <li><a href="threshold_vs_NumberComponents.html">Number of components</a></li>
+            <li><a href="threshold_vs_DegreeDistribution.html">Degree Distribution</a></li>
+            <li><a href="threshold_vs_ComponentSize.html">Component Size</a></li>
+            <li><a href="threshold_vs_EdgeWeights.html">Edge Weights</a></li>
+            <li><a href="threshold_vs_Centroids.html">Centroids</a></li>
+            <li><a href="Vertex_Neighbours.html">Vertex Neighbours</a></li>
+        </ul>
+        <br style="clear:left"/>
     </div>
+    
+    <br/>
+        
+    <div style="font-size:30px; margin-bottom:10px;">Gene names vs. Number of Neighbours</div>
     
     <hr>
     
-    <div id="container" style="min-width: 400px; height: 900px; margin: 0 auto"></div>
+    <div id="container" style="min-width: 400px; height: 9000px; margin: 0 auto"></div>
     
     <script type="text/javascript">
         $(function () {
@@ -42,7 +52,7 @@
                             type: 'bar'
                         },
                         title: {
-                            text: 'Threshold distribution'
+                            text: ''
                         },
                         subtitle: {
                             text: ''
