@@ -1227,7 +1227,6 @@ public class Graph {
 			
 			int [] humanDegrees = new int [705];
 			int [] apeDegrees = new int [705];
-			int index = 0;
 			
 			output.println ("{ \"categories\": [");
 			
@@ -1363,7 +1362,6 @@ public class Graph {
 			first = true;
 			boolean firstfirst = true;
 			double weight = 0;
-			int j = 0;
 			
 			output.println ("],");
 			output.println ("\"series\": [");
@@ -1492,8 +1490,6 @@ public class Graph {
 			
 			HashMap <String, Integer> humanCentroids = humanGraphs.get(threshold).getCentroidValue();
 			HashMap <String, Integer> apeCentroids = apeGraphs.get(threshold).getCentroidValue();
-			
-			// TODO sort centroids
 			
 			output.println ("{ \"categories\": [");
 			
